@@ -1,27 +1,59 @@
-import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/screens/sign_in/sign_in_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
+import 'package:e_commerce_app/shared/network/local/cache_helper.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore: must_be_immutable
-class SplashScreen extends StatefulWidget {
-  static String routeName = "/splash";
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
+class BoardingModel {
+  final String title;
+  final String image;
+
+  BoardingModel({
+    required this.title,
+    required this.image,
+  });
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+// ignore: must_be_immutable
+class OnBoardingScreen extends StatefulWidget {
+  static String routeName = "/boarding";
+  @override
+  _OnBoardingScreenState createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  List<BoardingModel> boarding = [
+    BoardingModel(
+      title: "Welcome to MEGA STORE, Let's shop",
+      image: "assets/images/splash_1.png",
+    ),
+    BoardingModel(
+      title: "We help people contact with store \naround Egypt",
+      image: "assets/images/splash_2.png",
+    ),
+    BoardingModel(
+      title: "We show the easy way to shop. \nJust stay at home with us",
+      image: "assets/images/splash_3.png",
+    ),
+  ];
   var currentPage = 0;
   bool isLast = false;
+  void submit() {
+    CacheHelper.saveData(
+      key: 'onBoarding',
+      value: true,
+    ).then((value) {
+      if (value) {
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     var boardingController = PageController();
-    var splashData = AppCubit.get(context).splashData;
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -34,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: PageView.builder(
                   controller: boardingController,
                   onPageChanged: (int index) {
-                    if (index == splashData.length - 1) {
+                    if (index == boarding.length - 1) {
                       setState(() {
                         isLast = true;
                       });
@@ -44,10 +76,9 @@ class _SplashScreenState extends State<SplashScreen> {
                       });
                     }
                   },
-                  itemCount: splashData.length,
-                  itemBuilder: (context, index) => SplashContent(
-                    image: splashData[index]["image"]!,
-                    text: splashData[index]["text"]!,
+                  itemCount: boarding.length,
+                  itemBuilder: (context, index) => buildOnBoarding(
+                    boarding[index],
                   ),
                 ),
               ),
@@ -64,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           children: [
                             SmoothPageIndicator(
                               controller: boardingController,
-                              count: splashData.length,
+                              count: boarding.length,
                               effect: ExpandingDotsEffect(
                                 dotColor: Colors.grey,
                                 activeDotColor: kPrimaryColor,
@@ -75,18 +106,19 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                           ]),
-                      Spacer(flex: 3,),
-                      SizedBox(
-                        width: double.infinity,
-                        height: getProportionateScreenHeight(56),
-                        child:defaultFloatButton(
-                          text: "Continue",
-                          function:(){
-                            Navigator.pushNamed(context, SignInScreen.routeName);
-                          } ,
-                          context: context,
-                        )
+                      Spacer(
+                        flex: 3,
                       ),
+                      SizedBox(
+                          width: double.infinity,
+                          height: getProportionateScreenHeight(56),
+                          child: defaultFloatButton(
+                            text: "Continue",
+                            function: () {
+                              submit();
+                            },
+                            // context: context,
+                          )),
                       Spacer(),
                     ],
                   ),
@@ -100,17 +132,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class SplashContent extends StatelessWidget {
-  const SplashContent({
-    Key? key,
-    required this.text,
-    required this.image,
-  }) : super(key: key);
-  final String text, image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
+Widget buildOnBoarding(BoardingModel model) => Column(
       children: [
         Spacer(),
         Text(
@@ -122,16 +144,14 @@ class SplashContent extends StatelessWidget {
           ),
         ),
         Text(
-          text,
+          '${model.title}',
           textAlign: TextAlign.center,
         ),
         Spacer(),
-        Image.asset(
-          image,
+        Image(
+          image: AssetImage('${model.image}'),
           height: getProportionateScreenHeight(265),
           width: getProportionateScreenWidth(235),
         ),
       ],
     );
-  }
-}
