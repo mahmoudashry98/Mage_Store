@@ -8,6 +8,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var forgotPasswordController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
@@ -66,15 +67,16 @@ class ForgotPasswordScreen extends StatelessWidget {
 
                         //هعملها و انا بعمل cubit ////////////////////////////
 
-                        // onSubmit: (value){
-                        //   if(_formKey.currentState!.validate()){
-                        //     _formKey.currentState!.save();
-                        //   }
-                        // },
+                        onSubmit: (value){
+                          if(_formKey.currentState!.validate()){
+                            _formKey.currentState!.save();
+                          }
+                        },
                         hintText: "Enter your email",
                         labelText: "Email",
-                        suffixIcon: Icons.email_outlined,
+                        suffix: Icons.email_outlined,
                         keyboardType: TextInputType.emailAddress,
+                        controller: forgotPasswordController,
                       ),
                       SizedBox(
                         height: SizeConfig.screenHeight *0.1 ,
@@ -92,24 +94,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         height: getProportionateScreenHeight(20),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              fontSize: getProportionateScreenWidth(16),
-                            ),
-                          ),
-                          Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              fontSize: getProportionateScreenWidth(16),
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        ],
                       ),
                     ]),
                   ),

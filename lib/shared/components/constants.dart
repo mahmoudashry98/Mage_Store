@@ -19,3 +19,5 @@ final headingStyle = TextStyle(
   color: Colors.black,
   height: 1.5,
 );
+
+String ?token = '';

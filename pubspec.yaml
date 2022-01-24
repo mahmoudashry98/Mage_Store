@@ -43,6 +43,15 @@ dependencies:
   #flutter_svg
   flutter_svg: ^0.21.0
 
+  #fluttertoast
+  fluttertoast: ^8.0.2
+
+  #shared_preferences
+  shared_preferences: ^2.0.6
+
+  #dio
+  dio: ^4.0.4
+
 
 dev_dependencies:
   flutter_test:

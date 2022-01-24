@@ -1,28 +1,37 @@
 
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'constants.dart';
 
 Widget defaultTextForm({
   required String labelText,
   required String hintText,
-  required IconData suffixIcon,
   TextInputType? keyboardType,
-  bool? obscureText,
   FormFieldValidator<String>? validate,
   ValueChanged<String>? onSubmit,
+  required TextEditingController controller,
+  bool isPassword = false,
+  IconData? suffix,
+  VoidCallback? suffixPressed,
 
 }){
   return  TextFormField(
+    controller: controller,
     onFieldSubmitted: onSubmit,
     validator: validate,
-    keyboardType: TextInputType.emailAddress,
-    obscureText: true,
+    keyboardType: keyboardType,
+    obscureText: isPassword,
     decoration: InputDecoration(
-      suffixIcon: Icon(
-        suffixIcon,
+      suffixIcon: suffix != null
+      ? IconButton(
+      onPressed: suffixPressed,
+      icon: Icon(
+        suffix,
       ),
+    )
+        : null,
       labelText: labelText,
       hintText: hintText,
       floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -65,4 +74,40 @@ Widget defaultFloatButton({
       ),
     ),
   );
+}
+
+
+void showToast({
+  required String text,
+  required ToastStates state,
+}) =>
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: chooseToastColor(state),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+// enum
+enum ToastStates { SUCCESS, ERROR, WARNING }
+
+Color chooseToastColor(ToastStates state) {
+  Color color;
+
+  switch (state) {
+    case ToastStates.SUCCESS:
+      color = Colors.green;
+      break;
+    case ToastStates.ERROR:
+      color = Colors.red;
+      break;
+    case ToastStates.WARNING:
+      color = Colors.amber;
+      break;
+  }
+
+  return color;
 }
