@@ -1,6 +1,7 @@
 
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'constants.dart';
@@ -111,3 +112,54 @@ Color chooseToastColor(ToastStates state) {
 
   return color;
 }
+
+Widget buildIconBtnWithCounter ({
+  required final String svgScr,
+  required final int numItems,
+})=> InkWell(
+  onTap: () {},
+  borderRadius: BorderRadius.circular(50),
+  child: Stack(
+    overflow: Overflow.visible,
+    children: [
+      Container(
+        padding: EdgeInsets.all(
+            getProportionateScreenWidth(12)),
+        height: getProportionateScreenWidth(46),
+        width: getProportionateScreenWidth(46),
+        decoration: BoxDecoration(
+            color: kSecondaryColor.withOpacity(0.1),
+            shape: BoxShape.circle),
+        child:
+        SvgPicture.asset('$svgScr'),
+      ),
+      if(numItems != 0)
+      Positioned(
+        top: 0,
+        right: 0,
+        child: Container(
+          height: getProportionateScreenWidth(16),
+          width: getProportionateScreenWidth(16),
+          decoration: BoxDecoration(
+              color: Color(0xFFFF4848),
+              shape: BoxShape.circle,
+              border: Border.all(
+                width: 1.5,
+                color: Colors.white,
+              )),
+          child: Center(
+            child: Text(
+              '$numItems',
+              style: TextStyle(
+                  fontSize:
+                  getProportionateScreenWidth(10),
+                  height: 1,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+);
