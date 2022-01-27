@@ -46,7 +46,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       value: true,
     ).then((value) {
       if (value) {
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInScreen()));
       }
     });
   }
@@ -133,25 +133,25 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 }
 
 Widget buildOnBoarding(BoardingModel model) => Column(
-      children: [
-        Spacer(),
-        Text(
-          'MEGA STORE',
-          style: TextStyle(
-            fontSize: getProportionateScreenWidth(36),
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          '${model.title}',
-          textAlign: TextAlign.center,
-        ),
-        Spacer(),
-        Image(
-          image: AssetImage('${model.image}'),
-          height: getProportionateScreenHeight(265),
-          width: getProportionateScreenWidth(235),
-        ),
-      ],
-    );
+  children: [
+    Spacer(),
+    Text(
+      'MEGA STORE',
+      style: TextStyle(
+        fontSize: getProportionateScreenWidth(36),
+        color: kPrimaryColor,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    Text(
+      '${model.title}',
+      textAlign: TextAlign.center,
+    ),
+    Spacer(),
+    Image(
+      image: AssetImage('${model.image}'),
+      height: getProportionateScreenHeight(265),
+      width: getProportionateScreenWidth(235),
+    ),
+  ],
+);

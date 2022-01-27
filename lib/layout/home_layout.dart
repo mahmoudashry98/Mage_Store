@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
+import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +13,7 @@ class HomeLayout extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, states) {},
       builder: (context, states) {
+        SizeConfig().init(context);
         var cubit = AppCubit.get(context);
         return Scaffold(
           body: cubit.bottomScreens[cubit.currentIndex],

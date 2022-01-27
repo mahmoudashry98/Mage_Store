@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit(),
+      create: (BuildContext context) => AppCubit()..getHomeData(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: themeDate(),
-            home: OnBoardingScreen(),
+            home: startWidget,
             // initialRoute: onBoarding! ? SignInScreen.routeName : OnBoardingScreen.routeName,
             routes: routes,
           );

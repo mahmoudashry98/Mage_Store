@@ -1,6 +1,7 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
-import 'package:e_commerce_app/models/product_model.dart';
+import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
@@ -21,167 +22,196 @@ class ProductScreen extends StatelessWidget {
           {"icon": "assets/icons/Gift Icon.svg", "text": "Daily\nGift"},
           {"icon": "assets/icons/Discover.svg", "text": "More"},
         ];
-        return SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                    vertical: getProportionateScreenWidth(20),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          width: SizeConfig.screenWidth * 0.6,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: kSecondaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: TextField(
-                            onChanged: (value) {
-                              ///////////////////search product
-                            },
-                            decoration: InputDecoration(
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                hintText: 'Search Product',
-                                prefixIcon: Icon(Icons.search),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: getProportionateScreenWidth(20),
-                                  vertical: getProportionateScreenHeight(20),
-                                )),
-                          )),
-                      buildIconBtnWithCounter(
-                        numItems: 0,
-                        svgScr: 'assets/icons/Cart Icon.svg',
-                      ),
-                      buildIconBtnWithCounter(
-                        numItems: 3,
-                        svgScr: 'assets/icons/Bell.svg',
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: getProportionateScreenWidth(10),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                    vertical: getProportionateScreenWidth(15),
-                  ),
-                  width: double.infinity,
-                  height: 90,
-                  decoration: BoxDecoration(
-                      color: Color(0xFF4A3298),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text.rich(TextSpan(
-                    text: "A Summer Surprise\n",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    children: [
-                      TextSpan(
-                          text: "CashBack 20%",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ],
-                  )),
-                ),
-                SizedBox(
-                  height: getProportionateScreenWidth(30),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...List.generate(
-                          categories.length,
-                          (index) => buildCategoriesItems(
-                                icon: categories[index]["icon"],
-                                text: categories[index]["text"],
-                                press: () {},
-                              )),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: getProportionateScreenWidth(30),
-                ),
-                Column(
+        return ConditionalBuilder(
+          condition: AppCubit.get(context).homeModel != null,
+          builder: (context) {
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    buildSectionTitle(
-                      text: "Special for you",
-                      press: () {},
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenWidth(20),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                        vertical: getProportionateScreenWidth(20),
+                      ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          buildSpecialOfferCard(
-                            category: 'Smartphone',
-                            image: 'assets/images/banner 2.png',
-                            numOfBrands: 18,
-                            press: () {},
+                          Container(
+                              width: SizeConfig.screenWidth * 0.6,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: kSecondaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextField(
+                                onChanged: (value) {
+                                  ///////////////////search product
+                                },
+                                decoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: 'Search Product',
+                                    prefixIcon: Icon(Icons.search),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          getProportionateScreenWidth(20),
+                                      vertical:
+                                          getProportionateScreenHeight(20),
+                                    )),
+                              )),
+                          buildIconBtnWithCounter(
+                            numItems: 0,
+                            svgScr: 'assets/icons/Cart Icon.svg',
                           ),
-                          buildSpecialOfferCard(
-                            category: 'Smartphone',
-                            image: 'assets/images/banner 3.png',
-                            numOfBrands: 24,
-                            press: () {},
-                          ),
-                          SizedBox(
-                            width: getProportionateScreenWidth(20),
+                          buildIconBtnWithCounter(
+                            numItems: 3,
+                            svgScr: 'assets/icons/Bell.svg',
                           ),
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: getProportionateScreenWidth(20),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    buildSectionTitle(
-                      text: "Popular Product",
-                      press: () {},
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenWidth(20),
+                      height: getProportionateScreenWidth(10),
                     ),
                     Container(
-                      width: double.infinity,
-                      height: getProportionateScreenWidth(190),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => buildProductCard(),
-                        itemCount: 10,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
                       ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                        vertical: getProportionateScreenWidth(15),
+                      ),
+                      width: double.infinity,
+                      height: 90,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF4A3298),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text.rich(TextSpan(
+                        text: "A Summer Surprise\n",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: "CashBack 20%",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ],
+                      )),
+                    ),
+                    SizedBox(
+                      height: getProportionateScreenWidth(30),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...List.generate(
+                              categories.length,
+                              (index) => buildCategoriesItems(
+                                    icon: categories[index]["icon"],
+                                    text: categories[index]["text"],
+                                    press: () {},
+                                  )),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: getProportionateScreenWidth(30),
+                    ),
+                    Column(
+                      children: [
+                        buildSectionTitle(
+                          text: "Special for you",
+                          press: () {},
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenWidth(20),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              buildSpecialOfferCard(
+                                category: 'Electronics',
+                                image: 'assets/images/banner 2.png',
+                                numOfBrands: 18,
+                                press: () {},
+                              ),
+                              buildSpecialOfferCard(
+                                category: 'Sports',
+                                image: 'assets/images/sports.jpg',
+                                numOfBrands: 24,
+                                press: () {},
+                              ),
+                              buildSpecialOfferCard(
+                                category: 'Lighting',
+                                image: 'assets/images/light.png',
+                                numOfBrands: 12,
+                                press: () {},
+                              ),
+                              buildSpecialOfferCard(
+                                category: 'Prevent Corona',
+                                image: 'assets/images/corona.png',
+                                numOfBrands: 5,
+                                press: () {},
+                              ),
+                              SizedBox(
+                                width: getProportionateScreenWidth(20),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenWidth(20),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        buildSectionTitle(
+                          text: "Popular Product",
+                          press: () {},
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenWidth(20),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: getProportionateScreenWidth(190),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => buildProductCard(
+                              AppCubit.get(context)
+                                  .homeModel!
+                                  .data!
+                                  .products[index],
+                            ),
+                            itemCount: AppCubit.get(context)
+                                .homeModel!
+                                .data!
+                                .products
+                                .length,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: getProportionateScreenWidth(20),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: getProportionateScreenWidth(20),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
+          fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );
@@ -310,7 +340,7 @@ class ProductScreen extends StatelessWidget {
         ),
       );
 
-  Widget buildProductCard() => Padding(
+  Widget buildProductCard(ProductModel model) => Padding(
         padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
         child: Container(
           width: getProportionateScreenWidth(140),
@@ -319,35 +349,44 @@ class ProductScreen extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1.02,
                 child: Container(
-                  padding: EdgeInsets.all(
-                    getProportionateScreenWidth(20),
-                  ),
                   decoration: BoxDecoration(
-                    color: kSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15.0),
                   ),
-                  child: Image.asset('assets/images/ps4_white_1.png'),
+                  child: Image.network(
+                    '${model.image}',
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 5,
               ),
               Text(
-                "Wireless Controller for PS4",
+                "${model.name}",
                 style: TextStyle(
                   color: Colors.black,
                 ),
-                maxLines: 2,
+                maxLines: 1,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "\$64.99",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
-                      fontWeight: FontWeight.w600,
-                      color: kPrimaryColor,
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(12),
+                        color: Colors.black,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${model.price}  ',
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(18),
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        TextSpan(text: 'EGP'),
+                      ],
                     ),
                   ),
                   InkWell(

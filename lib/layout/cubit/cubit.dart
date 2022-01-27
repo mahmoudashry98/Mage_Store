@@ -1,8 +1,12 @@
 import 'package:e_commerce_app/layout/cubit/states.dart';
+import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/screens/categories/categories_screen.dart';
 import 'package:e_commerce_app/screens/favorites/favorites_screen.dart';
 import 'package:e_commerce_app/screens/product/products_screen.dart';
 import 'package:e_commerce_app/screens/settings/settings_screen.dart';
+import 'package:e_commerce_app/shared/components/constants.dart';
+import 'package:e_commerce_app/shared/network/end_points.dart';
+import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,36 +32,25 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppChangeBottomNavState());
   }
 
-  //HomeModel homeModel;
+  HomeModel? homeModel;
+  void getHomeData(){
+    emit(AppLoadingHomeDataState());
+    DioHelper.getData(
+      url: HOME,
+      token: token,
+    ).
+    then((value) {
+      homeModel = HomeModel.fromJson(value.data);
+      printFullText(homeModel!.data!.products[2].image!);
+      print(homeModel!.status);
+      emit(AppSuccessHomeDataState());
+    }).
+    catchError((error){
+      print(error.toString());
+      emit(AppErrorHomeDataState());
+    });
 
-  //Map<int, bool> favorites = {};
-
-  // void getHomeData() {
-  //   emit(ShopLoadingHomeDataState());
-  //
-  //   DioHelper.getData(
-  //     url: HOME,
-  //     token: token,
-  //   ).then((value) {
-  //     homeModel = HomeModel.fromJson(value.data);
-  //
-  //     printFullText(homeModel.data.banners[0].image);
-  //     print(homeModel.status);
-  //
-  //     homeModel.data.products.forEach((element) {
-  //       favorites.addAll({
-  //         element.id: element.inFavorites,
-  //       });
-  //     });
-  //
-  //     print(favorites.toString());
-  //
-  //     emit(ShopSuccessHomeDataState());
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(ShopErrorHomeDataState());
-  //   });
-  // }
+  }
 
   // CategoriesModel categoriesModel;
   //
