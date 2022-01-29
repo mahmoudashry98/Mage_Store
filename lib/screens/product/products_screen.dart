@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
 import 'package:e_commerce_app/models/home_model.dart';
+import 'package:e_commerce_app/screens/search/search_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
@@ -45,6 +46,9 @@ class ProductScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: TextField(
+                                onTap: (){
+                                  Navigator.pushNamed(context, SearchScreen.routeName);
+                                },
                                 onChanged: (value) {
                                   ///////////////////search product
                                 },
@@ -211,7 +215,10 @@ class ProductScreen extends StatelessWidget {
               ),
             );
           },
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => Center(child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                Color(0xFFFF7643)),
+          )),
         );
       },
     );
@@ -354,6 +361,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                   child: Image.network(
                     '${model.image}',
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),

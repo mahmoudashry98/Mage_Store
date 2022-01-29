@@ -1,8 +1,7 @@
 import 'package:e_commerce_app/layout/home_layout.dart';
-import 'package:e_commerce_app/layout/home_layout.dart';
-import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:e_commerce_app/screens/on_boarding/boarding_screen.dart';
+import 'package:e_commerce_app/screens/search/search_screen.dart';
 import 'package:e_commerce_app/screens/sign_in/login_success_screen.dart';
 import 'package:e_commerce_app/screens/sign_in/sign_in_screen.dart';
 import 'package:e_commerce_app/screens/sign_up/sign_up_screen.dart';
@@ -17,5 +16,6 @@ late final Map<String, WidgetBuilder> routes ={
   ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
   LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
+  SearchScreen.routeName: (context) => SearchScreen(),
 
 };
