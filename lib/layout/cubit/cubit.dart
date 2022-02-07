@@ -23,7 +23,6 @@ class AppCubit extends Cubit<AppStates> {
     SettingsScreen(),
   ];
 
-
   void changeBottomNav(int index) {
     // if (index==3) getUserData();
     //
@@ -41,7 +40,7 @@ class AppCubit extends Cubit<AppStates> {
     ).
     then((value) {
       homeModel = HomeModel.fromJson(value.data);
-      printFullText(homeModel!.data!.products[2].image!);
+      //printFullText(homeModel!.data!.products[2].image!);
       print(homeModel!.status);
       emit(AppSuccessHomeDataState());
     }).
