@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:e_commerce_app/screens/sign_up/sign_up_screen.dart';
@@ -31,14 +32,14 @@ class SignInScreen extends StatelessWidget {
             if (state.loginModel.status!) {
               print(state.loginModel.message!);
               print(state.loginModel.data!.token);
+              CacheHelper.saveData(key: 'token', value: state.loginModel.data!.token).then((value) {
+                Navigator.pushReplacementNamed(context, HomeLayout.routeName);
+              });
               showToast(
                 text: state.loginModel.message!,
                 state: ToastStates.SUCCESS,
               );
-              CacheHelper.saveData(key: 'token', value: state.loginModel.data!.token).then((value) {
-                Navigator.pushReplacementNamed(context, HomeLayout.routeName);
-              });
-            } else {
+            } else if(!state.loginModel.status!){
               print(state.loginModel.message);
               showToast(
                 text: state.loginModel.message!,
@@ -148,9 +149,11 @@ class SignInScreen extends StatelessWidget {
                                 children: [
                                   Checkbox(
                                     activeColor: kPrimaryColor,
-                                    //هعملها و انا بعمل cubit ////////////////////////////
-                                    value: false,
-                                    onChanged: (value) {},
+                                    value: LoginCubit.get(context).value,
+                                    onChanged: (bool? value) {
+                                      LoginCubit.get(context).checkbox(value);
+                                      print(value);
+                                    },
                                   ),
                                   Text('Remember me'),
                                   Spacer(),

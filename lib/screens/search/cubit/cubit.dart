@@ -13,6 +13,7 @@ class SearchCubit extends Cubit<SearchStates> {
   static SearchCubit get(context) => BlocProvider.of(context);
 
   SearchModel? model;
+  Product? productModel;
 
   void search(String text) {
     emit(SearchLoadingState());

@@ -115,7 +115,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                       alignment: Alignment.centerRight,
                       child: Container(
                         padding:
-                            EdgeInsets.all(getProportionateScreenWidth(15)),
+                            EdgeInsets.all(getProportionateScreenWidth(5)),
                         width: getProportionateScreenWidth(64),
                         decoration: BoxDecoration(
                             color: Color(0xFFFFE6E6),
@@ -123,9 +123,16 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                               topLeft: Radius.circular(20),
                               bottomLeft: Radius.circular(20),
                             )),
-                        child: SvgPicture.asset(
-                          'assets/icons/Heart Icon.svg',
-                          color: Color(0xFFFF4848),
+                        child:IconButton(
+                          onPressed: (){
+                            AppCubit.get(context).changeFavorites(widget.model.id!);
+                          },
+                          icon: Icon(
+                            Icons.favorite,
+                            size: 25,
+                            color: AppCubit.get(context).favorites[widget.model.id]! ? kPrimaryColor:Colors.grey ,
+                          ),
+
                         ),
                       ),
                     ),
@@ -148,24 +155,41 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                         left: getProportionateScreenWidth(20),
                         right: getProportionateScreenWidth(64),
                       ),
-                      child: Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(12),
-                            color: Colors.black,
-                          ),
-                          children: [
+                      child: Row(
+                        children: [
+                          Text.rich(
                             TextSpan(
-                              text: 'Price: ${widget.model.price!}  ',
                               style: TextStyle(
-                                fontSize: getProportionateScreenWidth(18),
-                                fontWeight: FontWeight.bold,
-                                color: kPrimaryColor,
+                                fontSize: getProportionateScreenWidth(12),
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Price: ${widget.model.price.round()} ',
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(18),
+                                    fontWeight: FontWeight.bold,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                                TextSpan(text: 'EGP'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          if (widget.model.discount != 0)
+                            Text(
+                              '${widget.model.oldPrice.round()}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
                               ),
                             ),
-                            TextSpan(text: 'EGP'),
-                          ],
-                        ),
+
+                        ],
                       ),
                     ),
                   ],

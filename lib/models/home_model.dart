@@ -18,7 +18,9 @@ class HomeDataModel {
 
 class ProductModel {
   int? id;
-  dynamic? price;
+  dynamic price;
+  dynamic oldPrice;
+  dynamic discount;
   String? image;
   List<String>? images;
   String? name;
@@ -29,6 +31,8 @@ class ProductModel {
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     price = json['price'];
+    oldPrice = json['old_price'];
+    discount = json['discount'];
     image = json['image'];
     images = json['images'].cast<String>();
     name = json['name'];

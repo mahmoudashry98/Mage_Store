@@ -20,3 +20,6 @@ class LoginErrorState extends LoginStates {
 
 //ChangePasswordVisibility
 class ChangePasswordVisibilityState extends LoginStates {}
+
+//checkBox
+class AppCheckBoxState extends LoginStates {}

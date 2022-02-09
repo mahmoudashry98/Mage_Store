@@ -12,6 +12,12 @@ class LoginCubit extends Cubit<LoginStates> {
 
   LoginModel? loginModel;
 
+  bool value = false;
+
+  void checkbox(bool) {
+    value = bool;
+    emit(AppCheckBoxState());
+  }
   void userLogin({
     required String email,
     required String password,

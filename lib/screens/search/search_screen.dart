@@ -1,3 +1,8 @@
+import 'package:e_commerce_app/layout/cubit/cubit.dart';
+import 'package:e_commerce_app/models/home_model.dart';
+import 'package:e_commerce_app/models/search_model.dart';
+import 'package:e_commerce_app/screens/product/details_product_screen.dart';
+import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,6 +66,8 @@ class SearchScreen extends StatelessWidget {
                       itemBuilder: (context, index) => buildListProduct(
                         SearchCubit.get(context).model!.data!.data![index],
                         context,
+                        index,
+                        AppCubit.get(context).homeModel!.data!.products[index],
                       ),
                       separatorBuilder: (context, index) => SizedBox(
                         width: 5.0,
@@ -78,73 +85,86 @@ class SearchScreen extends StatelessWidget {
   }
 
   Widget buildListProduct(
-    model,
-    context,
-  ) =>
+      model,
+      context,
+      index,
+      ProductModel productModel,
+      ) =>
       Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Card(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          elevation: 5,
-          color: Colors.white,
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            height: 120.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
-            child: Row(
-              children: [
-                Stack(
-                  children: [
-                    Image(
-                      image: NetworkImage(model.image),
-                      height: 100,
-                      width: 100,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: InkWell(
+          onTap: () {
+            navigateTo(
+                context,
+                ProductItemScreen(
+                  index: index,
+                  model: AppCubit.get(context).homeModel!.data!.products[index],
+                ));
+          },
+          child: Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            elevation: 5,
+            color: Colors.white,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              height: 120.0,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(50)),
+              child: Row(
+                children: [
+                  Stack(
                     children: [
-                      Text(
-                        model.name,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          height: 1.3,
-                        ),
-                      ),
-                      Spacer(),
-                      Row(
-                        children: [
-                          Text.rich(
-                            TextSpan(
-                              style: TextStyle(
-                                fontSize: getProportionateScreenWidth(12),
-                                color: Colors.black,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '${model.price}  ',
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(18),
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                                TextSpan(text: 'EGP'),
-                              ],
-                            ),
-                          ),
-                        ],
+                      Image(
+                        image: NetworkImage(model.image),
+                        height: 100,
+                        width: 100,
                       ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.name,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            height: 1.3,
+                          ),
+                        ),
+                        Spacer(),
+                        Row(
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(12),
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '${model.price}  ',
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(18),
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(text: 'EGP'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
