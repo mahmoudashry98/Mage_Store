@@ -1,5 +1,4 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:e_commerce_app/screens/sign_up/sign_up_screen.dart';

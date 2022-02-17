@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
 import 'package:e_commerce_app/models/home_model.dart';
@@ -24,7 +25,24 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AppSuccessChangeCartsState){
+          if (state.model.status!){
+            print(state.model.message);
+            showToast(
+              text: state.model.message!,
+              state: ToastStates.SUCCESS,
+            );
+          }else if(!state.model.status!){
+            print(state.model.message);
+            showToast(
+              text: state.model.message!,
+              state: ToastStates.ERROR,
+            );
+
+          }
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -60,13 +78,14 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
           body: Column(
             children: [
               SizedBox(
-                width: getProportionateScreenWidth(238),
+                width: getProportionateScreenWidth(220),
                 child: AspectRatio(
                   aspectRatio: 1,
                   child:
                       Image.network('${widget.model.images![selectedImage]}'),
                 ),
               ),
+              const SizedBox(height: 5,),
               Center(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -196,15 +215,25 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              SizedBox(
-                width: getProportionateScreenWidth(200),
-                height: getProportionateScreenHeight(46),
-                child: defaultFloatButton(
-                  text: "Add to Chart",
-                  function: () {},
+              ConditionalBuilder(
+                condition: state is! AppChangeCartsLoadingState,
+                builder: (context) => SizedBox(
+                  width: getProportionateScreenWidth(200),
+                  height: getProportionateScreenHeight(46),
+                  child: defaultFloatButton(
+                    text: "Add to Chart",
+                    function: () {
+                      AppCubit.get(context).changeCarts(widget.model.id!);
+                    },
+                  ),
                 ),
+                fallback: (context) => Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFFFF7643)),
+                    )),
               ),
             ],
           ),

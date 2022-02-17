@@ -1,4 +1,5 @@
 
+import 'package:e_commerce_app/screens/cart/cart_screen.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -116,10 +117,11 @@ Color chooseToastColor(ToastStates state) {
 Widget buildIconBtnWithCounter ({
   required final String svgScr,
   required final int numItems,
-})=> InkWell(
-  onTap: () {},
-  borderRadius: BorderRadius.circular(50),
-  child: Stack(
+  final GestureTapCallback? press,
+  context,
+})=> GestureDetector(
+  onTap: press,
+  child:   Stack(
     overflow: Overflow.visible,
     children: [
       Container(
@@ -129,7 +131,8 @@ Widget buildIconBtnWithCounter ({
         width: getProportionateScreenWidth(46),
         decoration: BoxDecoration(
             color: kSecondaryColor.withOpacity(0.1),
-            shape: BoxShape.circle),
+            shape: BoxShape.circle,
+        ),
         child:
         SvgPicture.asset('$svgScr'),
       ),

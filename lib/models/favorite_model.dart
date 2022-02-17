@@ -65,15 +65,6 @@ class Product {
   late String name;
   late String description;
 
-  Product(
-      {required this.id,
-        required this.price,
-        required this.oldPrice,
-        required this.discount,
-        required this.image,
-        required this.name,
-        required this.description});
-
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     price = json['price'];
@@ -84,15 +75,4 @@ class Product {
     description = json['description'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['price'] = this.price;
-    data['old_price'] = this.oldPrice;
-    data['discount'] = this.discount;
-    data['image'] = this.image;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    return data;
-  }
 }

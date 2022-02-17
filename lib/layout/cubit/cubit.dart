@@ -1,4 +1,6 @@
 import 'package:e_commerce_app/layout/cubit/states.dart';
+import 'package:e_commerce_app/models/cart_product_model.dart';
+import 'package:e_commerce_app/models/change_carts_model.dart';
 import 'package:e_commerce_app/models/change_favorite_model.dart';
 import 'package:e_commerce_app/models/favorite_model.dart';
 import 'package:e_commerce_app/models/home_model.dart';
@@ -37,6 +39,8 @@ class AppCubit extends Cubit<AppStates> {
 
   Map<int, bool> favorites = {};
 
+  Map<int, bool> carts = {};
+
   void getHomeData() {
     emit(AppLoadingHomeDataState());
     DioHelper.getData(
@@ -47,6 +51,11 @@ class AppCubit extends Cubit<AppStates> {
       homeModel!.data!.products.forEach((element) {
         favorites.addAll({
           element.id!: element.inFavorites!,
+        });
+      });
+      homeModel!.data!.products.forEach((element) {
+        carts.addAll({
+          element.id!: element.inCart!,
         });
       });
       print(favorites.toString());
@@ -60,7 +69,6 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   ChangeFavoritesModel? changeFavoritesModel;
-
   void changeFavorites(int productId) {
     favorites[productId] = !favorites[productId]!;
     emit(AppChangeFavoritesState());
@@ -88,11 +96,34 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  FavoritesModel? favoritesModel;
+  ChangeCartsModel? changeCartsModel;
+  void changeCarts(int productId) {
+    emit(AppChangeCartsLoadingState());
+    DioHelper.postData(
+      url: CARTS,
+      data: {
+        'product_id': productId,
+      },
+      token: token,
+    ).then((value) {
+      changeCartsModel = ChangeCartsModel.fromJson(value.data);
+      print(value.data);
+      if (!changeCartsModel!.status!) {
+        carts[productId] = !carts[productId]!;
 
+      }else{
+        getCarts();
+      }
+      emit(AppSuccessChangeCartsState(changeCartsModel!));
+    }).catchError((error) {
+      carts[productId] = !carts[productId]!;
+      emit(AppErrorChangeCartsState());
+    });
+  }
+
+  FavoritesModel? favoritesModel;
   void getFavorites() {
     emit(AppLoadingGetFavoritesState());
-
     DioHelper.getData(
       url: FAVORITES,
       token: token,
@@ -106,6 +137,41 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppErrorGetFavoritesState());
     });
   }
+
+  CartsModel? cartsModel;
+  void getCarts() {
+    emit(AppLoadingGetCartsState());
+    DioHelper.getData(
+      url: CARTS,
+      token: token,
+    ).then((value) {
+      cartsModel = CartsModel.fromJson(value.data);
+      printFullText(value.data.toString());
+      print(value.data);
+      print(',,,,,,,,,,,,,,,,,,,,,,,,,');
+      print(carts.length);
+      emit(AppSuccessGetCartsState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorGetCartsState());
+    });
+  }
+  // CartsModel? cartsModel;
+  // void getCarts() {
+  //   emit(AppLoadingGetCartsState());
+  //   DioHelper.getData(
+  //     url: CARTS,
+  //     token: token,
+  //   ).then((value) {
+  //     cartsModel = CartsModel.fromJson(value.data);
+  //     printFullText(value.data.toString());
+  //
+  //     emit(AppSuccessGetCartsState());
+  //   }).catchError((error) {
+  //     print(error.toString());
+  //     emit(AppErrorGetCartsState());
+  //   });
+  // }
 
   // ShopLoginModel userModel;
   // void getUserData() {

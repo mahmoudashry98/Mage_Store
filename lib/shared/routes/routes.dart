@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/models/home_model.dart';
+import 'package:e_commerce_app/screens/cart/cart_screen.dart';
 import 'package:e_commerce_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:e_commerce_app/screens/on_boarding/boarding_screen.dart';
 import 'package:e_commerce_app/screens/product/details_product_screen.dart';
@@ -20,6 +21,7 @@ late final Map<String, WidgetBuilder> routes ={
   LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),
+  CartScreen.routeName: (context) => CartScreen(),
   //ProductItemScreen.routeName: (context,) => ProductItemScreen(),
 
 };

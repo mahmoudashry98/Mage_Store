@@ -37,24 +37,24 @@ class FavoritesScreen extends StatelessWidget {
                 context,
                 index,
               ),
-              itemCount: AppCubit.get(context).favoritesModel!.data!.data!.length,
+              itemCount:
+                  AppCubit.get(context).favoritesModel!.data!.data!.length,
             ),
             fallback: (context) => Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF7643)),
-                )),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF7643)),
+            )),
           ),
         );
       },
     );
   }
 
-
   Widget buildFavItem(
-      FavoritesData model,
-      context,
-      index,
-      ) =>
+    FavoritesData model,
+    context,
+    index,
+  ) =>
       InkWell(
         onTap: () {
           navigateTo(
@@ -75,9 +75,7 @@ class FavoritesScreen extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomStart,
                   children: [
                     Image(
-                      image: NetworkImage(
-                        model.product!.image
-                      ),
+                      image: NetworkImage(model.product!.image),
                       height: 120.0,
                       width: 120.0,
                     ),
@@ -152,7 +150,8 @@ class FavoritesScreen extends StatelessWidget {
                             },
                             icon: CircleAvatar(
                               radius: 15.0,
-                              backgroundColor: AppCubit.get(context).favorites[model.product!.id]!
+                              backgroundColor: AppCubit.get(context)
+                                      .favorites[model.product!.id]!
                                   ? kPrimaryColor
                                   : Colors.grey,
                               child: Icon(

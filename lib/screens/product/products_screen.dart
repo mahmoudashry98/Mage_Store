@@ -1,8 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
+import 'package:e_commerce_app/models/cart_product_model.dart';
 import 'package:e_commerce_app/models/home_model.dart';
-import 'package:e_commerce_app/screens/categories/electronics_screen.dart';
+import 'package:e_commerce_app/screens/cart/cart_screen.dart';
 import 'package:e_commerce_app/screens/product/details_product_screen.dart';
 import 'package:e_commerce_app/screens/search/search_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
@@ -27,7 +28,10 @@ class ProductScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: AppCubit.get(context).homeModel != null,
           builder: (context) {
-            return builderWidget(AppCubit.get(context).homeModel, context);
+            return builderWidget(
+                AppCubit.get(context).homeModel,
+                AppCubit.get(context).cartsModel!.data!.cartItems!.first,
+                context);
           },
           fallback: (context) => Center(
               child: CircularProgressIndicator(
@@ -40,6 +44,7 @@ class ProductScreen extends StatelessWidget {
 
   Widget builderWidget(
     HomeModel? model,
+    CartItems? cartItems,
     context,
   ) {
     List<Map<String, dynamic>> categories = [
@@ -83,9 +88,12 @@ class ProductScreen extends StatelessWidget {
                             )),
                       )),
                   buildIconBtnWithCounter(
-                    numItems: 0,
-                    svgScr: 'assets/icons/Cart Icon.svg',
-                  ),
+                      numItems:0,
+                      //AppCubit.get(context).cartsModel!.data!.cartItems!.length,
+                      svgScr: 'assets/icons/Cart Icon.svg',
+                      press: () {
+                        navigateTo(context, CartScreen());
+                      }),
                   buildIconBtnWithCounter(
                     numItems: 3,
                     svgScr: 'assets/icons/Bell.svg',
@@ -165,12 +173,7 @@ class ProductScreen extends StatelessWidget {
                         category: 'Electronics',
                         image: 'assets/images/banner 2.png',
                         numOfBrands: 18,
-                        press: () {
-                          navigateTo(
-                              context,
-                              ElectronicsScreen());
-
-                        },
+                        press: () {},
                       ),
                       buildSpecialOfferCard(
                         category: 'Sports',
