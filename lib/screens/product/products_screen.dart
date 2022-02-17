@@ -30,7 +30,6 @@ class ProductScreen extends StatelessWidget {
           builder: (context) {
             return builderWidget(
                 AppCubit.get(context).homeModel,
-                AppCubit.get(context).cartsModel!.data!.cartItems!.first,
                 context);
           },
           fallback: (context) => Center(
@@ -44,7 +43,6 @@ class ProductScreen extends StatelessWidget {
 
   Widget builderWidget(
     HomeModel? model,
-    CartItems? cartItems,
     context,
   ) {
     List<Map<String, dynamic>> categories = [
@@ -54,6 +52,7 @@ class ProductScreen extends StatelessWidget {
       {"icon": "assets/icons/Gift Icon.svg", "text": "Daily\nGift"},
       {"icon": "assets/icons/Discover.svg", "text": "More"},
     ];
+    var cartsModel = AppCubit.get(context).cartsModel!.data!;
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -88,8 +87,7 @@ class ProductScreen extends StatelessWidget {
                             )),
                       )),
                   buildIconBtnWithCounter(
-                      numItems:0,
-                      //AppCubit.get(context).cartsModel!.data!.cartItems!.length,
+                      numItems:cartsModel.cartItems!.length,
                       svgScr: 'assets/icons/Cart Icon.svg',
                       press: () {
                         navigateTo(context, CartScreen());

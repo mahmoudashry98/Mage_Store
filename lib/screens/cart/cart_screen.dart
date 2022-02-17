@@ -23,6 +23,7 @@ class _CartScreenState extends State<CartScreen> {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        var model = AppCubit.get(context).cartsModel!.data!;
         return Scaffold(
           appBar: AppBar(
             title: Padding(
@@ -35,110 +36,131 @@ class _CartScreenState extends State<CartScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  Text(''
-                      // '${demoCart.length} items',
-                      //  style: Theme.of(context).textTheme.caption,
-                      )
+                  Text(
+                    ''
+                    '${model.cartItems!.length} items',
+                    style: Theme.of(context).textTheme.caption,
+                  )
                 ],
               ),
             ),
           ),
           body: ConditionalBuilder(
             condition: state is! AppLoadingGetCartsState,
-            builder: (context) => ListView.builder(
-              itemBuilder: (context, index) => buildCart(
-                AppCubit.get(context).cartsModel!.data!.cartItems![index],
-              ),
-              itemCount:
-                  AppCubit.get(context).cartsModel!.data!.cartItems!.length,
-            ),
+            builder: (context) =>
+                AppCubit.get(context).cartsModel!.data!.cartItems!.length == 0
+                    ? Center(
+                      child: SvgPicture.asset(
+                  'assets/images/empty_cart.svg',
+                  width: 200,
+                  height: 200,
+                ),
+                    )
+                    : ListView.builder(
+                        itemBuilder: (context, index) => buildCart(
+                          AppCubit.get(context)
+                              .cartsModel!
+                              .data!
+                              .cartItems![index],
+                        ),
+                        itemCount: AppCubit.get(context)
+                            .cartsModel!
+                            .data!
+                            .cartItems!
+                            .length,
+                      ),
             fallback: (context) => Center(
                 child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF7643)),
             )),
           ),
-          bottomNavigationBar: Container(
-            //height: 174,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-              boxShadow: ([
-                BoxShadow(
-                  offset: Offset(
-                    0,
-                    -15,
+          bottomNavigationBar: ConditionalBuilder(
+            condition:  AppCubit.get(context).cartsModel!.data!.cartItems!.length != 0 ,
+            builder: (context) => AppCubit.get(context).cartsModel!.data!.cartItems!.length == 0 ?Container(color: Colors.white,):Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+                boxShadow: ([
+                  BoxShadow(
+                    offset: Offset(
+                      0,
+                      -15,
+                    ),
+                    blurRadius: 20,
+                    color: Color(0xFFDADADA).withOpacity(0.5),
                   ),
-                  blurRadius: 20,
-                  color: Color(0xFFDADADA).withOpacity(0.5),
-                ),
-              ]),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          height: getProportionateScreenWidth(40),
-                          width: getProportionateScreenWidth(40),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF5F6F9),
-                            borderRadius: BorderRadius.circular(10),
+                ]),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            height: getProportionateScreenWidth(40),
+                            width: getProportionateScreenWidth(40),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5F6F9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: SvgPicture.asset('assets/icons/receipt.svg'),
                           ),
-                          child: SvgPicture.asset('assets/icons/receipt.svg'),
-                        ),
-                        Spacer(),
-                        Text(
-                          'Add voucher code',
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 18,
-                          color: kTextColor,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: getProportionateScreenWidth(20),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(text: "Total:\n", children: [
-                            TextSpan(
-                                text: "335.5 ",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black)),
-                            TextSpan(
-                              text: 'EGP ',
-                              style: TextStyle(color: kTextColor),
-                            )
-                          ]),
-                        ),
-                        SizedBox(
-                          width: getProportionateScreenWidth(200),
-                          height: getProportionateScreenHeight(46),
-                          child: defaultFloatButton(
-                            text: "Check Out",
-                            function: () {},
+                          Spacer(),
+                          Text(
+                            'Add voucher code',
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18,
+                            color: kTextColor,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenWidth(20),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text.rich(
+                            TextSpan(text: "Total:\n", children: [
+                              TextSpan(
+                                  text: "${model.total} ",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black)),
+                              TextSpan(
+                                text: 'EGP ',
+                                style: TextStyle(color: kTextColor),
+                              )
+                            ]),
+                          ),
+                          SizedBox(
+                            width: getProportionateScreenWidth(200),
+                            height: getProportionateScreenHeight(46),
+                            child: defaultFloatButton(
+                              text: "Check Out",
+                              function: () {},
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
+            ) ,
+            fallback: (context) => CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
         );

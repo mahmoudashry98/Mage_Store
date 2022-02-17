@@ -35,12 +35,8 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppChangeBottomNavState());
   }
 
+  //Get HomeData
   HomeModel? homeModel;
-
-  Map<int, bool> favorites = {};
-
-  Map<int, bool> carts = {};
-
   void getHomeData() {
     emit(AppLoadingHomeDataState());
     DioHelper.getData(
@@ -68,6 +64,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  //Get FavoritesData
   ChangeFavoritesModel? changeFavoritesModel;
   void changeFavorites(int productId) {
     favorites[productId] = !favorites[productId]!;
@@ -95,7 +92,25 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppErrorChangeFavoritesState());
     });
   }
+  FavoritesModel? favoritesModel;
+  Map<int, bool> favorites = {};
+  void getFavorites() {
+    emit(AppLoadingGetFavoritesState());
+    DioHelper.getData(
+      url: FAVORITES,
+      token: token,
+    ).then((value) {
+      favoritesModel = FavoritesModel.fromJson(value.data);
+      printFullText(value.data.toString());
 
+      emit(AppSuccessGetFavoritesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorGetFavoritesState());
+    });
+  }
+
+  //GetCartsDate
   ChangeCartsModel? changeCartsModel;
   void changeCarts(int productId) {
     emit(AppChangeCartsLoadingState());
@@ -120,25 +135,8 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppErrorChangeCartsState());
     });
   }
-
-  FavoritesModel? favoritesModel;
-  void getFavorites() {
-    emit(AppLoadingGetFavoritesState());
-    DioHelper.getData(
-      url: FAVORITES,
-      token: token,
-    ).then((value) {
-      favoritesModel = FavoritesModel.fromJson(value.data);
-      printFullText(value.data.toString());
-
-      emit(AppSuccessGetFavoritesState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(AppErrorGetFavoritesState());
-    });
-  }
-
   CartsModel? cartsModel;
+  Map<int, bool> carts = {};
   void getCarts() {
     emit(AppLoadingGetCartsState());
     DioHelper.getData(
@@ -156,22 +154,6 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppErrorGetCartsState());
     });
   }
-  // CartsModel? cartsModel;
-  // void getCarts() {
-  //   emit(AppLoadingGetCartsState());
-  //   DioHelper.getData(
-  //     url: CARTS,
-  //     token: token,
-  //   ).then((value) {
-  //     cartsModel = CartsModel.fromJson(value.data);
-  //     printFullText(value.data.toString());
-  //
-  //     emit(AppSuccessGetCartsState());
-  //   }).catchError((error) {
-  //     print(error.toString());
-  //     emit(AppErrorGetCartsState());
-  //   });
-  // }
 
   // ShopLoginModel userModel;
   // void getUserData() {
