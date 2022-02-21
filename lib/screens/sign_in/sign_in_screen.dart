@@ -142,7 +142,7 @@ class SignInScreen extends StatelessWidget {
                                 controller: passwordController,
                               ),
                               SizedBox(
-                                height: SizeConfig.screenHeight * 0.08,
+                                height: SizeConfig.screenHeight * 0.05,
                               ),
                               Row(
                                 children: [

@@ -1,9 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
-import 'package:e_commerce_app/models/cart_product_model.dart';
 import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/screens/cart/cart_screen.dart';
+import 'package:e_commerce_app/screens/categories/electronics_screen.dart';
 import 'package:e_commerce_app/screens/product/details_product_screen.dart';
 import 'package:e_commerce_app/screens/search/search_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
@@ -60,7 +60,7 @@ class ProductScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20),
-                vertical: getProportionateScreenWidth(20),
+                vertical: getProportionateScreenWidth(10),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,7 +146,8 @@ class ProductScreen extends StatelessWidget {
                       (index) => buildCategoriesItems(
                             icon: categories[index]["icon"],
                             text: categories[index]["text"],
-                            press: () {},
+                            press: () {
+                            },
                           )),
                 ],
               ),
@@ -171,7 +172,9 @@ class ProductScreen extends StatelessWidget {
                         category: 'Electronics',
                         image: 'assets/images/banner 2.png',
                         numOfBrands: 18,
-                        press: () {},
+                        press: () {
+                          navigateTo(context, ElectronicsScreen());
+                        },
                       ),
                       buildSpecialOfferCard(
                         category: 'Sports',

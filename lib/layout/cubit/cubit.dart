@@ -7,6 +7,7 @@ import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/screens/categories/categories_screen.dart';
 import 'package:e_commerce_app/screens/favorites/favorites_screen.dart';
 import 'package:e_commerce_app/screens/product/products_screen.dart';
+import 'package:e_commerce_app/screens/profile/profile_screen.dart';
 import 'package:e_commerce_app/screens/settings/settings_screen.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/end_points.dart';
@@ -22,15 +23,14 @@ class AppCubit extends Cubit<AppStates> {
 
   List<Widget> bottomScreens = [
     ProductScreen(),
-    CategoriesScreen(),
     FavoritesScreen(),
-    SettingsScreen(),
+    ProfileScreen(),
   ];
 
   void changeBottomNav(int index) {
     // if (index==3) getUserData();
     //
-    if (index==2) getFavorites();
+    if (index==1) getFavorites();
     currentIndex = index;
     emit(AppChangeBottomNavState());
   }

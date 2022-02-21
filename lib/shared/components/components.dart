@@ -1,5 +1,3 @@
-
-import 'package:e_commerce_app/screens/cart/cart_screen.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -186,3 +184,4 @@ void navigateAndFinish(
         return false;
       },
     );
+

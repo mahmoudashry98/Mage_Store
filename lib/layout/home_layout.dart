@@ -3,7 +3,6 @@ import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'cubit/states.dart';
 
 class HomeLayout extends StatelessWidget {
@@ -26,12 +25,8 @@ class HomeLayout extends StatelessWidget {
             currentIndex: cubit.currentIndex,
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.home_filled),
                 label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.apps),
-                label: 'Categories',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
