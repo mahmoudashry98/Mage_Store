@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/home_layout.dart';
+import 'package:e_commerce_app/screens/sign_in/login_success_screen.dart';
 import 'package:e_commerce_app/screens/sign_up/cubit/cubit.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
@@ -41,12 +42,14 @@ class SignUpScreen extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, HomeLayout.routeName);
               });
             } else {
-              print(state.loginModel.message);
-              showToast(
-                text: state.loginModel.message!,
-                state: ToastStates.ERROR,
-              );
+
             }
+          }else if(state is RegisterErrorState){
+            print(state.loginModel.message);
+            showToast(
+              text: state.loginModel.message!,
+              state: ToastStates.ERROR,
+            );
           }
         },
         builder: (context, state) {
@@ -99,9 +102,6 @@ class SignUpScreen extends StatelessWidget {
                                 return 'please enter your Name';
                               }
                             },
-
-                            //هعملها و انا بعمل cubit ////////////////////////////
-
                             onSubmit: (value) {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
@@ -122,9 +122,6 @@ class SignUpScreen extends StatelessWidget {
                                 return 'please enter your Email';
                               }
                             },
-
-                            //هعملها و انا بعمل cubit ////////////////////////////
-
                             onSubmit: (value) {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
@@ -175,9 +172,6 @@ class SignUpScreen extends StatelessWidget {
                                 return 'please enter your Phone';
                               }
                             },
-
-                            //هعملها و انا بعمل cubit ////////////////////////////
-
                             onSubmit: (value) {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
@@ -205,19 +199,17 @@ class SignUpScreen extends StatelessWidget {
                                         name: nameController.text,
                                         email: emailController.text,
                                         password: passwordController.text,
-                                        phone: phoneController.text
-                                    );
-
-                                    AppCubit.get(context).currentIndex=0;
+                                        phone: phoneController.text);
+                                    AppCubit.get(context).currentIndex = 0;
                                   }
                                 },
                               ),
                             ),
                             fallback: (context) => Center(
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Color(0xFFFF7643)),
-                                )),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color(0xFFFF7643)),
+                            )),
                           ),
                           SizedBox(
                             height: SizeConfig.screenHeight * 0.08,

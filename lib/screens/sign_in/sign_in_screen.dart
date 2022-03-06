@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
+import 'login_success_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   static String routeName = "/sign_in";
@@ -31,20 +32,24 @@ class SignInScreen extends StatelessWidget {
             if (state.loginModel.status!) {
               print(state.loginModel.message!);
               print(state.loginModel.data!.token);
-              CacheHelper.saveData(key: 'token', value: state.loginModel.data!.token).then((value) {
+              CacheHelper.saveData(
+                  key: 'token',
+                  value: state.loginModel.data!.token,
+              ).then((value) {
+                token = state.loginModel.data!.token;
                 Navigator.pushReplacementNamed(context, HomeLayout.routeName);
               });
               showToast(
                 text: state.loginModel.message!,
                 state: ToastStates.SUCCESS,
               );
-            } else if(!state.loginModel.status!){
-              print(state.loginModel.message);
-              showToast(
-                text: state.loginModel.message!,
-                state: ToastStates.ERROR,
-              );
             }
+          }else if(state is LoginErrorState){
+            print(state.loginModel.message);
+            showToast(
+              text: state.loginModel.message!,
+              state: ToastStates.ERROR,
+            );
           }
         },
         builder: (context, state) {
@@ -99,9 +104,6 @@ class SignInScreen extends StatelessWidget {
                                     return 'please enter your email address';
                                   }
                                 },
-
-                                //هعملها و انا بعمل cubit ////////////////////////////
-
                                 onSubmit: (value) {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
@@ -178,7 +180,7 @@ class SignInScreen extends StatelessWidget {
                                   width: double.infinity,
                                   height: getProportionateScreenHeight(56),
                                   child: defaultFloatButton(
-                                    text: "Continue",
+                                    text: "Sing in",
                                     function: () {
                                       if (_formKey.currentState!.validate()) {
                                         LoginCubit.get(context).userLogin(

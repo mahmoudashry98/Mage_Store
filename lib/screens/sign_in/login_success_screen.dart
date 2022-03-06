@@ -1,7 +1,9 @@
+import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/screens/sign_in/cubit/cubit.dart';
 import 'package:e_commerce_app/screens/sign_in/cubit/states.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
+import 'package:e_commerce_app/shared/network/local/cache_helper.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,7 @@ class LoginSuccessScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Padding(
-                padding: const EdgeInsets.only(left: 70),
+                padding: const EdgeInsets.only(left: 120),
                 child: Text(
                   'Login Success',
                   style: TextStyle(
@@ -54,7 +56,10 @@ class LoginSuccessScreen extends StatelessWidget {
                   height: getProportionateScreenHeight(56),
                   child: defaultFloatButton(
                     text: "Back to home",
-                    function: () {},
+                    function: () {
+                      CacheHelper.getData(key: 'token');
+                      Navigator.pushReplacementNamed(context, HomeLayout.routeName);
+                    },
                   ),
                 ),
                 SizedBox(
