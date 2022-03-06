@@ -4,6 +4,9 @@ import 'package:e_commerce_app/layout/cubit/states.dart';
 import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/screens/cart/cart_screen.dart';
 import 'package:e_commerce_app/screens/categories/electronics_screen.dart';
+import 'package:e_commerce_app/screens/categories/lighting_screen.dart';
+import 'package:e_commerce_app/screens/categories/prevent_corona.dart';
+import 'package:e_commerce_app/screens/categories/sports_screen.dart';
 import 'package:e_commerce_app/screens/product/details_product_screen.dart';
 import 'package:e_commerce_app/screens/search/search_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
@@ -20,7 +23,10 @@ class ProductScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is AppSuccessChangeFavoritesState) {
           if (!state.model.status!) {
-            showToast(text: state.model.message!, state: ToastStates.ERROR);
+            showToast(
+              text: state.model.message!,
+              state: ToastStates.ERROR,
+            );
           }
         }
       },
@@ -28,9 +34,7 @@ class ProductScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: AppCubit.get(context).homeModel != null,
           builder: (context) {
-            return builderWidget(
-                AppCubit.get(context).homeModel,
-                context);
+            return builderWidget(AppCubit.get(context).homeModel!, context);
           },
           fallback: (context) => Center(
               child: CircularProgressIndicator(
@@ -87,7 +91,7 @@ class ProductScreen extends StatelessWidget {
                             )),
                       )),
                   buildIconBtnWithCounter(
-                      numItems:cartsModel.cartItems!.length,
+                      numItems: cartsModel.cartItems!.length,
                       svgScr: 'assets/icons/Cart Icon.svg',
                       press: () {
                         navigateTo(context, CartScreen());
@@ -146,8 +150,7 @@ class ProductScreen extends StatelessWidget {
                       (index) => buildCategoriesItems(
                             icon: categories[index]["icon"],
                             text: categories[index]["text"],
-                            press: () {
-                            },
+                            press: () {},
                           )),
                 ],
               ),
@@ -171,7 +174,7 @@ class ProductScreen extends StatelessWidget {
                       buildSpecialOfferCard(
                         category: 'Electronics',
                         image: 'assets/images/banner 2.png',
-                        numOfBrands: 18,
+                        numOfBrands: 10,
                         press: () {
                           navigateTo(context, ElectronicsScreen());
                         },
@@ -179,20 +182,26 @@ class ProductScreen extends StatelessWidget {
                       buildSpecialOfferCard(
                         category: 'Sports',
                         image: 'assets/images/sports.jpg',
-                        numOfBrands: 24,
-                        press: () {},
+                        numOfBrands: 6,
+                        press: () {
+                          navigateTo(context, SportsScreen());
+                        },
                       ),
                       buildSpecialOfferCard(
                         category: 'Lighting',
                         image: 'assets/images/light.png',
-                        numOfBrands: 12,
-                        press: () {},
+                        numOfBrands: 2,
+                        press: () {
+                          navigateTo(context, LightingScreen());
+                        },
                       ),
                       buildSpecialOfferCard(
                         category: 'Prevent Corona',
                         image: 'assets/images/corona.png',
                         numOfBrands: 5,
-                        press: () {},
+                        press: () {
+                          navigateTo(context, PreventCoronaScreen());
+                        },
                       ),
                       SizedBox(
                         width: getProportionateScreenWidth(20),

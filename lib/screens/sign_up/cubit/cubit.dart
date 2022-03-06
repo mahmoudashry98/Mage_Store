@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/models/login_model.dart';
 import 'package:e_commerce_app/screens/sign_up/cubit/states.dart';
+import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/end_points.dart';
 import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
     DioHelper.postData(
       url: REGISTER,
+      token: token,
       data: {
         'name': name,
         'email': email,
@@ -38,7 +40,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       emit(RegisterSuccessState(loginModel!));
     }).catchError((error) {
       print(error.toString());
-      emit(RegisterErrorState(error.toString()));
+      emit(RegisterErrorState(error.toString(),loginModel!));
     });
   }
 

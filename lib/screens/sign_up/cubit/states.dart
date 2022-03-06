@@ -14,8 +14,8 @@ class RegisterSuccessState extends RegisterStates {
 }
 class RegisterErrorState extends RegisterStates {
   final String error;
-
-  RegisterErrorState(this.error);
+  final LoginModel loginModel;
+  RegisterErrorState(this.error,this.loginModel);
 }
 
 //ChangePasswordVisibility

@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/models/login_model.dart';
 import 'package:e_commerce_app/screens/sign_in/cubit/states.dart';
+import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/end_points.dart';
 import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
     DioHelper.postData(
       url: LOGIN,
+      token: token,
       data: {
         'email': email,
         'password': password,
@@ -40,7 +42,7 @@ class LoginCubit extends Cubit<LoginStates> {
       emit(LoginSuccessState(loginModel!));
     }).catchError((error) {
       print(error.toString());
-      emit(LoginErrorState(error.toString()));
+      emit(LoginErrorState(error.toString(),loginModel!));
     });
   }
 

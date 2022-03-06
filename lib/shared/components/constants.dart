@@ -34,13 +34,13 @@ void printFullText(String text) {
 
 void signOut(context) {
   CacheHelper.removeData(key: 'token');
-  token = null;
-  //var model = LoginCubit.get(context).userModel;
-  // ShopCubit.get(context).favoritesModel=[];
-  //
-  // model!.data!.name='';
-  // model!.data!.email='';
-  // model!.data!.phone='';
+  print(token);
+  // token = null;
+  var model = AppCubit.get(context).userModel;
+
+  model!.data!.name='';
+  model.data!.email='';
+  model.data!.phone='';
   navigateAndFinish(context, SignInScreen(),);
   AppCubit
       .get(context)

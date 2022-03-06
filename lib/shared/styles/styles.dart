@@ -4,7 +4,15 @@ import 'package:flutter/services.dart';
 
 ThemeData themeDate(){
   return ThemeData(
-    appBarTheme: appBarTheme(),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      elevation: 0.0,
+      backwardsCompatibility: false,
+      systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor:Colors.white,
+          statusBarIconBrightness: Brightness.dark
+      ),
+    ),
     scaffoldBackgroundColor: Colors.white,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     textTheme: textTheme(),
