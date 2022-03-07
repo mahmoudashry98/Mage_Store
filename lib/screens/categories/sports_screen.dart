@@ -1,8 +1,8 @@
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:flutter/material.dart';
 
-class ElectronicsScreen extends StatelessWidget {
-  const ElectronicsScreen({Key? key}) : super(key: key);
+class SportsScreen extends StatelessWidget {
+  const SportsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class ElectronicsScreen extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.only(left: 95),
           child: Text(
-            'Electronics',
+            'Sports',
             style: TextStyle(
               color: kTextColor,
               fontSize: 18,
@@ -30,70 +30,42 @@ class ElectronicsScreen extends StatelessWidget {
             crossAxisSpacing: 1.0,
             childAspectRatio: 1 / 1.4,
             children: [
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615440322npwmU.71DVgBTdyLL._SL1500_.jpg',
-                name: 'Apple iPhone 12 Pro Max',
-                price: 25000,
-                oldPrice: 25000,
+              buildSportsItems(
+                image: 'https://student.valuxapps.com/storage/uploads/products/161545152160GOl.item_XXL_39275650_152762070.jpeg',
+                name: 'Stark Iron Kettlebell, 24 KG',
+                price: 1083,
+                oldPrice: 1083,
                 discount: 0,
               ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615442168bVx52.item_XXL_36581132_143760083.jpeg',
-                name: 'Apple MacBook Pro',
-                price:  44500,
-                oldPrice:  44500,
+              buildSportsItems(
+                image: 'https://student.valuxapps.com/storage/uploads/products/1638737571de5EF.21.jpg',
+                name: "Nike Men's NSW Tee Icon Futura",
+                price: 1085,
+                oldPrice: 1085,
                 discount: 0,
               ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615440689wYMHV.item_XXL_36330138_142814934.jpeg',
-                name: 'JBL Xtreme 2 Portable Waterproof Bluetooth Speaker',
-                price: 5599,
-                oldPrice: 10230,
-                discount: 1,
-              ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615441020ydvqD.item_XXL_51889566_32a329591e022.jpeg',
-                name: 'Samsung 65 Inch Smart TV 4K Ultra HD Curved',
-                price: 11499,
-                oldPrice: 12499,
-                discount: 1,
-              ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615450256e0bZk.item_XXL_7582156_7501823.jpeg',
-                name: 'Nikon FX-format D750',
-                price: 32860,
-                oldPrice: 35000,
-                discount: 1,
-              ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1615451352LMOAF.item_XXL_23705724_34135503.jpeg',
-                name: 'Kingston A400 Internal SSD 2.5\" 240GB SATA 3',
-                price: 530,
-                oldPrice: 530,
+              buildSportsItems(
+                image: 'https://student.valuxapps.com/storage/uploads/products/1638737146iLO2c.11.jpg',
+                name: "Nike Flex Essential Mesh Training Shoes For Women - White",
+                price: 1606.5,
+                oldPrice: 1606.5,
                 discount: 0,
               ),
-              buildElectronicsItems(
-                image: 'https://student.valuxapps.com/storage/uploads/products/1638734961565J3.11.jpg',
-                name: 'Xiaomi Redmi 10 Dual SIM Mobile',
-                price: 3075.2,
-                oldPrice: 3075.2,
-                discount: 0,
-              ),
-              buildElectronicsItems(
+              buildSportsItems(
                 image: 'https://student.valuxapps.com/storage/uploads/products/16387377980g2kx.11.jpg',
                 name: 'Sony Pulse 3D Wireless Gaming Headset for PlayStation 5',
                 price: 1596.9,
                 oldPrice: 2659.05,
                 discount: 1,
               ),
-              buildElectronicsItems(
+              buildSportsItems(
                 image: 'https://student.valuxapps.com/storage/uploads/products/1638737964KFEyZ.21.jpg',
                 name: 'Sony WI-C200 Wireless Headphones - Black',
                 price: 499,
                 oldPrice: 999,
                 discount: 1,
               ),
-              buildElectronicsItems(
+              buildSportsItems(
                 image: 'https://student.valuxapps.com/storage/uploads/products/1638735246ToPmP.21.jpg',
                 name: 'Xiaomi Mi Smart Band 5 - Black',
                 price: 444,
@@ -107,7 +79,7 @@ class ElectronicsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildElectronicsItems({
+  Widget buildSportsItems({
     required final String image,
     required final String name,
     required final double price,
@@ -129,19 +101,19 @@ class ElectronicsScreen extends StatelessWidget {
                   height: 200,
                 ),
                 if (discount != 0)
-                Container(
-                  color: Colors.red,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 5.0,
-                  ),
-                  child: Text(
-                    'DISCOUNT',
-                    style: TextStyle(
-                      fontSize: 8.0,
-                      color: Colors.white,
+                  Container(
+                    color: Colors.red,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 5.0,
+                    ),
+                    child: Text(
+                      'DISCOUNT',
+                      style: TextStyle(
+                        fontSize: 8.0,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
             Padding(
@@ -173,15 +145,15 @@ class ElectronicsScreen extends StatelessWidget {
                         width: 5,
                       ),
                       if (discount != 0)
-                      Text(
-                        '${oldPrice.round()}',
-                        // '${model.oldPrice.round()}',
-                        style: TextStyle(
-                          fontSize: 10.0,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
+                        Text(
+                          '${oldPrice.round()}',
+                          // '${model.oldPrice.round()}',
+                          style: TextStyle(
+                            fontSize: 10.0,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
                         ),
-                      ),
                       // Expanded(
                       //   child: IconButton(
                       //       icon: ShopCubit.get(context).favorites[model.id]!
