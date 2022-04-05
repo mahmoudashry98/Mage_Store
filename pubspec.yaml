@@ -60,6 +60,9 @@ dependencies:
   #Image Picker
   image_picker: ^0.8.1+4
 
+  #Status Change
+  status_change: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

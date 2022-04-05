@@ -19,6 +19,7 @@ import 'package:image_picker/image_picker.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
+
   static AppCubit get(context) => BlocProvider.of(context);
 
   int currentIndex = 0;
@@ -31,7 +32,7 @@ class AppCubit extends Cubit<AppStates> {
 
   void changeBottomNav(int index) {
     if (index == 1) getFavorites();
-    if (index==2) getUserData();
+    if (index == 2) getUserData();
     currentIndex = index;
     emit(AppChangeBottomNavState());
   }
@@ -39,6 +40,7 @@ class AppCubit extends Cubit<AppStates> {
   //GetImagePicker
   File? imageProfile;
   var picker = ImagePicker();
+
   Future<void> getProfileImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -52,6 +54,7 @@ class AppCubit extends Cubit<AppStates> {
 
   //Get HomeData
   HomeModel? homeModel;
+
   void getHomeData() {
     emit(AppLoadingHomeDataState());
     DioHelper.getData(
@@ -81,6 +84,7 @@ class AppCubit extends Cubit<AppStates> {
 
   //Get FavoritesData
   ChangeFavoritesModel? changeFavoritesModel;
+
   void changeFavorites(int productId) {
     favorites[productId] = !favorites[productId]!;
     emit(AppChangeFavoritesState());
@@ -109,6 +113,7 @@ class AppCubit extends Cubit<AppStates> {
 
   FavoritesModel? favoritesModel;
   Map<int, bool> favorites = {};
+
   void getFavorites() {
     emit(AppLoadingGetFavoritesState());
     DioHelper.getData(
@@ -116,7 +121,7 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       favoritesModel = FavoritesModel.fromJson(value.data);
-     // printFullText(value.data.toString());
+      // printFullText(value.data.toString());
 
       emit(AppSuccessGetFavoritesState());
     }).catchError((error) {
@@ -127,6 +132,7 @@ class AppCubit extends Cubit<AppStates> {
 
   //GetCartsDate
   ChangeCartsModel? changeCartsModel;
+
   void changeCarts(int productId) {
     emit(AppChangeCartsLoadingState());
     DioHelper.postData(
@@ -152,6 +158,7 @@ class AppCubit extends Cubit<AppStates> {
 
   CartsModel? cartsModel;
   Map<int, bool> carts = {};
+
   void getCarts() {
     emit(AppLoadingGetCartsState());
     DioHelper.getData(
@@ -159,7 +166,7 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       cartsModel = CartsModel.fromJson(value.data);
-     // printFullText(value.data.toString());
+      // printFullText(value.data.toString());
       //print(value.data);
       //print(',,,,,,,,,,,,,,,,,,,,,,,,,');
       //print(carts.length);
@@ -170,8 +177,36 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  //PlusQuantityItem
+  void plusQuantity(int index, model) {
+    model.data!.cartItems![index].quantity++;
+    emit(AppUpdateCartPlusQuantity());
+  }
+
+  //MinusQuantityItem
+  void minusQuantity(int index, model) {
+    model.data!.cartItems![index].quantity--;
+    emit(AppUpdateCartMinusQuantity());
+  }
+  void updateCartData({required String id, int? quantity }) {
+    emit(AppLoadingUpdateCartDataState());
+    DioHelper.putData(
+      url: "${"carts/" +id}",
+      data: {
+        'quantity': quantity,
+      },
+      token: token,
+    ).then((value) {
+      getCarts();
+    }).catchError((error){
+      print(error.toString());
+      emit(AppErrorUpdateCartDataState());
+    });
+  }
+
   //GetUserData
   LoginModel? userModel;
+
   void getUserData() {
     emit(AppLoadingGetUserDataState());
     DioHelper.getData(
@@ -179,7 +214,7 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       userModel = LoginModel.fromJson(value.data);
-     // printFullText(userModel!.data!.name!);
+      // printFullText(userModel!.data!.name!);
 
       emit(AppSuccessGetUserDataState(userModel!));
     }).catchError((error) {
@@ -206,7 +241,7 @@ class AppCubit extends Cubit<AppStates> {
       },
     ).then((value) {
       userModel = LoginModel.fromJson(value.data);
-     // printFullText(userModel!.data!.name!);
+      // printFullText(userModel!.data!.name!);
 
       emit(AppSuccessUpdateUserState(userModel!));
     }).catchError((error) {

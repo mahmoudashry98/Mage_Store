@@ -363,7 +363,9 @@ class ProductScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 )),
                             TextSpan(text: '$numOfBrands Brands'),
-                          ]),
+
+                          ],
+                      ),
                     ),
                   )
                 ],

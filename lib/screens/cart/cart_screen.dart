@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
 import 'package:e_commerce_app/models/cart_product_model.dart';
+import 'package:e_commerce_app/screens/cart/check_out/check_out_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = "/cart";
+
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
@@ -50,11 +52,14 @@ class CartScreen extends StatelessWidget {
                       )
                     : ListView.builder(
                         itemBuilder: (context, index) => buildCart(
-                            AppCubit.get(context)
-                                .cartsModel!
-                                .data!
-                                .cartItems![index],
-                            context),
+                          AppCubit.get(context)
+                              .cartsModel!
+                              .data!
+                              .cartItems![index],
+                          context,
+                          index,
+                          AppCubit.get(context).cartsModel!,
+                        ),
                         itemCount: AppCubit.get(context)
                             .cartsModel!
                             .data!
@@ -150,7 +155,9 @@ class CartScreen extends StatelessWidget {
                                       height: getProportionateScreenHeight(46),
                                       child: defaultFloatButton(
                                         text: "Check Out",
-                                        function: () {},
+                                        function: () {
+                                          navigateTo(context, CheckOutScreen());
+                                        },
                                       ),
                                     ),
                                   ],
@@ -169,7 +176,8 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCart(CartItems model, context) => Padding(
+  Widget buildCart(CartItems cartItems, context, index, CartsModel model) =>
+      Padding(
         padding: EdgeInsets.symmetric(
           vertical: 10,
         ),
@@ -192,7 +200,7 @@ class CartScreen extends StatelessWidget {
                           aspectRatio: 0.99,
                           child: Container(
                             child: Image.network(
-                              "${model.product!.image}",
+                              "${cartItems.product!.image}",
                             ),
                           ),
                         ),
@@ -204,7 +212,7 @@ class CartScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${model.product!.name}",
+                                "${cartItems.product!.name}",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -222,7 +230,7 @@ class CartScreen extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text:
-                                          "${model.product!.price.toString()} ",
+                                          "${cartItems.product!.price.toString()} ",
                                       style: TextStyle(
                                         fontSize:
                                             getProportionateScreenWidth(18),
@@ -254,10 +262,20 @@ class CartScreen extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           icon: Icon(Icons.add),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            AppCubit.get(context)
+                                                .plusQuantity(index, model);
+                                            AppCubit.get(context)
+                                                .updateCartData(
+                                              id: model
+                                                  .data!.cartItems![index].id
+                                                  .toString(),
+                                              quantity: model.data!.cartItems![index].quantity
+                                            );
+                                          },
                                         ),
                                         Text(
-                                          '1',
+                                          '${model.data!.cartItems![index].quantity.toString()}',
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.black),
@@ -267,7 +285,17 @@ class CartScreen extends StatelessWidget {
                                           icon: Icon(
                                             Icons.minimize,
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            AppCubit.get(context)
+                                                .minusQuantity(index, model);
+                                            AppCubit.get(context)
+                                                .updateCartData(
+                                                id: model
+                                                    .data!.cartItems![index].id
+                                                    .toString(),
+                                                quantity: model.data!.cartItems![index].quantity
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
@@ -277,7 +305,7 @@ class CartScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(55.0),
                                     onTap: () {
                                       AppCubit.get(context)
-                                          .changeCarts(model.product!.id!);
+                                          .changeCarts(cartItems.product!.id!);
                                     },
                                     child: SvgPicture.asset(
                                       'assets/icons/Trash.svg',

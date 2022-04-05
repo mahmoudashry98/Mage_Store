@@ -180,7 +180,7 @@ class SignInScreen extends StatelessWidget {
                                   width: double.infinity,
                                   height: getProportionateScreenHeight(56),
                                   child: defaultFloatButton(
-                                    text: "Sing in",
+                                    text: "Sign in",
                                     function: () {
                                       if (_formKey.currentState!.validate()) {
                                         LoginCubit.get(context).userLogin(

@@ -49,6 +49,12 @@ class AppLoadingGetCartsState extends AppStates{}
 class AppSuccessGetCartsState extends AppStates{}
 class AppErrorGetCartsState extends AppStates{}
 
+//PlusQuantity
+class AppUpdateCartPlusQuantity extends AppStates{}
+
+//MinusQuantity
+class AppUpdateCartMinusQuantity extends AppStates{}
+
 //GetUserData
 class AppLoadingGetUserDataState extends AppStates{}
 class AppSuccessGetUserDataState extends AppStates{
@@ -66,4 +72,8 @@ class AppSuccessUpdateUserState extends AppStates{
   AppSuccessUpdateUserState(this.loginModel);
 }
 class AppErrorUpdateUserState extends AppStates{}
+
+//UpdateCartData
+class AppLoadingUpdateCartDataState extends AppStates{}
+class AppErrorUpdateCartDataState extends AppStates{}
 

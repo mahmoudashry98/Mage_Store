@@ -2,7 +2,6 @@ import 'package:e_commerce_app/screens/on_boarding/boarding_screen.dart';
 import 'package:e_commerce_app/screens/sign_in/sign_in_screen.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/local/cache_helper.dart';
-import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:e_commerce_app/shared/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

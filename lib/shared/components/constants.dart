@@ -1,5 +1,4 @@
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
-import 'package:e_commerce_app/screens/sign_in/cubit/cubit.dart';
 import 'package:e_commerce_app/screens/sign_in/sign_in_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/network/local/cache_helper.dart';
@@ -47,3 +46,12 @@ void signOut(context) {
       .currentIndex = 0;
 }
 
+const kTileHeight = 50.0;
+const inProgressColor = Colors.black87;
+const todoColor = Color(0xffd1d2d7);
+
+enum Pages {
+  DeliveryTime,
+  AddAddress,
+  Summary,
+}
