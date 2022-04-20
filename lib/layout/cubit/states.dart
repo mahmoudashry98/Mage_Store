@@ -1,6 +1,10 @@
+import 'package:e_commerce_app/models/address_model.dart';
 import 'package:e_commerce_app/models/change_carts_model.dart';
 import 'package:e_commerce_app/models/change_favorite_model.dart';
 import 'package:e_commerce_app/models/login_model.dart';
+
+import '../../models/get_address_model.dart';
+import '../../models/update_address_model.dart';
 
 abstract class AppStates {}
 
@@ -8,6 +12,18 @@ class AppInitialState extends AppStates {}
 
 //ChangeBottomNav
 class AppChangeBottomNavState extends AppStates {}
+
+//AddStep
+class AppAddStepSuccessState extends AppStates{}
+
+//MinusStep
+class AppMinusStepSuccessState extends AppStates{}
+
+//OnStepTapped
+class AppOnStepTappedSuccessState extends AppStates{}
+
+//Radio
+class AppRadioSuccessState extends AppStates{}
 
 //GetImage
 class AppGetImagePickedSuccessState extends AppStates{}
@@ -73,7 +89,43 @@ class AppSuccessUpdateUserState extends AppStates{
 }
 class AppErrorUpdateUserState extends AppStates{}
 
+
+//GetUserDataAddress
+class AppLoadingGetUserDataAddressState extends AppStates{}
+class AppSuccessGetUserDataAddressState extends AppStates{
+  final GetAddressModel getAddressModel;
+
+  AppSuccessGetUserDataAddressState(this.getAddressModel);
+}
+class AppErrorGetUserDataAddressState extends AppStates{}
+
+//UpdateUserAddress
+class AppLoadingUpdateUserAddressState extends AppStates{}
+class AppSuccessUpdateUserAddressState extends AppStates{
+  final  UpdateAddressModel updateAddressModel;
+
+  AppSuccessUpdateUserAddressState(this.updateAddressModel);
+}
+class AppErrorUpdateUserAddressState extends AppStates{}
+
 //UpdateCartData
 class AppLoadingUpdateCartDataState extends AppStates{}
 class AppErrorUpdateCartDataState extends AppStates{}
+
+//UserAddress
+class AppLoadingUserAddressState extends AppStates {}
+class AppSuccessUserAddressState extends AppStates {
+
+  final AddressModel addressModel;
+
+  AppSuccessUserAddressState(this.addressModel);
+}
+class AppErrorUserAddressState extends AppStates {
+  final String error;
+  AppErrorUserAddressState(this.error);
+}
+
+//addOrders
+class AppSuccessAddOrdersState extends AppStates {}
+class AppErrorAddOrdersState extends AppStates {}
 

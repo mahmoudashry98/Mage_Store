@@ -29,16 +29,14 @@ class MyAccountScreen extends StatelessWidget {
         phoneController.text = model.data!.phone!;
         return Scaffold(
           appBar: AppBar(
-            title: Padding(
-              padding: const EdgeInsets.only(left: 110),
-              child: Text(
-                'Profile',
-                style: TextStyle(
-                  color: kTextColor,
-                  fontSize: 18,
-                ),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                color: kTextColor,
+                fontSize: 18,
               ),
             ),
+            centerTitle: true,
           ),
           body: SingleChildScrollView(
             child: Form(
@@ -53,11 +51,13 @@ class MyAccountScreen extends StatelessWidget {
                         overflow: Overflow.visible,
                         children: [
                           CircleAvatar(
-                            backgroundImage: imageProfile == null
-                                ? NetworkImage('${model.data!.image}')
-                                : FileImage(imageProfile) as ImageProvider,
-                            backgroundColor: Color(0xFFF5F6F9),
-                          ),
+                            backgroundImage: AssetImage('assets/images/user.jpg')),
+                          // CircleAvatar(
+                          //   backgroundImage: imageProfile == null
+                          //       ? NetworkImage('${model.data!.image}')
+                          //       : FileImage(imageProfile) as ImageProvider,
+                          //   backgroundColor: Color(0xFFF5F6F9),
+                          // ),
                           Positioned(
                             right: -10,
                             bottom: 0,
@@ -154,7 +154,7 @@ class MyAccountScreen extends StatelessWidget {
                           function: () {
                             if (_formKey.currentState!.validate()) {
                               AppCubit.get(context).updateUserData(
-                                image: model.data!.image,
+                                //image:Image.asset('user.jpg'),
                                 name: nameController.text,
                                 email: emailController.text,
                                 phone: phoneController.text,

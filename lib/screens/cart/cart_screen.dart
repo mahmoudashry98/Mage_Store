@@ -2,13 +2,14 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/cubit/states.dart';
 import 'package:e_commerce_app/models/cart_product_model.dart';
-import 'package:e_commerce_app/screens/cart/check_out/check_out_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/size/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'check_out_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = "/cart";
@@ -157,6 +158,7 @@ class CartScreen extends StatelessWidget {
                                         text: "Check Out",
                                         function: () {
                                           navigateTo(context, CheckOutScreen());
+
                                         },
                                       ),
                                     ),
@@ -247,71 +249,73 @@ class CartScreen extends StatelessWidget {
                               SizedBox(
                                 height: 10,
                               ),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 140,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xFFDADADA).withOpacity(0.5),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.add),
-                                          onPressed: () {
-                                            AppCubit.get(context)
-                                                .plusQuantity(index, model);
-                                            AppCubit.get(context)
-                                                .updateCartData(
-                                              id: model
-                                                  .data!.cartItems![index].id
-                                                  .toString(),
-                                              quantity: model.data!.cartItems![index].quantity
-                                            );
-                                          },
-                                        ),
-                                        Text(
-                                          '${model.data!.cartItems![index].quantity.toString()}',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.black),
-                                        ),
-                                        IconButton(
-                                          padding: EdgeInsets.only(bottom: 20),
-                                          icon: Icon(
-                                            Icons.minimize,
-                                          ),
-                                          onPressed: () {
-                                            AppCubit.get(context)
-                                                .minusQuantity(index, model);
-                                            AppCubit.get(context)
-                                                .updateCartData(
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 140,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Color(0xFFDADADA).withOpacity(0.5),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.add),
+                                            onPressed: () {
+                                              AppCubit.get(context)
+                                                  .plusQuantity(index, model);
+                                              AppCubit.get(context)
+                                                  .updateCartData(
                                                 id: model
                                                     .data!.cartItems![index].id
                                                     .toString(),
                                                 quantity: model.data!.cartItems![index].quantity
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                              );
+                                            },
+                                          ),
+                                          Text(
+                                            '${model.data!.cartItems![index].quantity.toString()}',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.black),
+                                          ),
+                                          IconButton(
+                                            padding: EdgeInsets.only(bottom: 20),
+                                            icon: Icon(
+                                              Icons.minimize,
+                                            ),
+                                            onPressed: () {
+                                              AppCubit.get(context)
+                                                  .minusQuantity(index, model);
+                                              AppCubit.get(context)
+                                                  .updateCartData(
+                                                  id: model
+                                                      .data!.cartItems![index].id
+                                                      .toString(),
+                                                  quantity: model.data!.cartItems![index].quantity
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Spacer(),
-                                  InkWell(
-                                    borderRadius: BorderRadius.circular(55.0),
-                                    onTap: () {
-                                      AppCubit.get(context)
-                                          .changeCarts(cartItems.product!.id!);
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/icons/Trash.svg',
+                                    Spacer(),
+                                    InkWell(
+                                      borderRadius: BorderRadius.circular(55.0),
+                                      onTap: () {
+                                        AppCubit.get(context)
+                                            .changeCarts(cartItems.product!.id!);
+                                      },
+                                      child: SvgPicture.asset(
+                                        'assets/icons/Trash.svg',
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),

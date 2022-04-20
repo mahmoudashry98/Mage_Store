@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'address_screen.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
   @override
@@ -39,15 +41,17 @@ class ProfileScreen extends StatelessWidget {
                     fit: StackFit.expand,
                     overflow: Overflow.visible,
                     children: [
-                      imageProfile == null
-                        ?CircleAvatar(
-                          backgroundImage: imageProfile == null
-                              ? NetworkImage('${model!.data!.image}')
-                              : FileImage(imageProfile) as ImageProvider,
-                          backgroundColor: Color(0xFFF5F6F9),
-                        ):CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/user.jpg')
-                      ),
+                  CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/user.jpg')
+                      // imageProfile == null
+                      //   ?CircleAvatar(
+                      //     backgroundImage: imageProfile == null
+                      //         ? NetworkImage('${model!.data!.image}')
+                      //         : FileImage(imageProfile) as ImageProvider,
+                      //     backgroundColor: Color(0xFFF5F6F9),
+                      //   ):CircleAvatar(
+                      //   backgroundImage: AssetImage('assets/images/user.jpg')
+                       ),
 
 
                     ],
@@ -61,6 +65,14 @@ class ProfileScreen extends StatelessWidget {
                   icon: 'assets/icons/User Icon.svg',
                   press: () {
                     navigateTo(context,MyAccountScreen());
+                  },
+                  context: context,
+                ),
+                buildFlatBtu(
+                  text: "Address",
+                  icon: 'assets/icons/address.svg',
+                  press: () {
+                    navigateTo(context, AddressScreen());
                   },
                   context: context,
                 ),

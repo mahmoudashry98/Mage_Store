@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:e_commerce_app/layout/cubit/states.dart';
+import 'package:e_commerce_app/models/address_model.dart';
 import 'package:e_commerce_app/models/cart_product_model.dart';
 import 'package:e_commerce_app/models/change_carts_model.dart';
 import 'package:e_commerce_app/models/change_favorite_model.dart';
@@ -17,6 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../models/get_address_model.dart';
+import '../../models/update_address_model.dart';
+import '../../shared/network/local/cache_helper.dart';
+
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
 
@@ -24,12 +29,47 @@ class AppCubit extends Cubit<AppStates> {
 
   int currentIndex = 0;
 
+  int newIndex = 0;
+
   List<Widget> bottomScreens = [
     ProductScreen(),
     FavoritesScreen(),
     ProfileScreen(),
   ];
 
+  void onStepTapped(int index) {
+    newIndex = index;
+    emit(AppOnStepTappedSuccessState());
+  }
+
+  //OnStepContinue
+  void onStepContinue() {
+    if (newIndex != 2) {
+      newIndex += 1;
+      emit(AppAddStepSuccessState());
+      print('add');
+    }
+  }
+
+  //OnStepCancel
+  void onStepCancel() {
+    if (newIndex != 0) {
+      newIndex -= 1;
+      emit(AppMinusStepSuccessState());
+      print('Minus');
+    }
+  }
+
+  //Radio
+  int currentValue = 1;
+
+  void radio(var value) {
+    currentValue = value;
+    emit(AppRadioSuccessState());
+    print('Select Done');
+  }
+
+  //BottomNav
   void changeBottomNav(int index) {
     if (index == 1) getFavorites();
     if (index == 2) getUserData();
@@ -72,9 +112,6 @@ class AppCubit extends Cubit<AppStates> {
           element.id!: element.inCart!,
         });
       });
-      // print(favorites.toString());
-      //printFullText(homeModel!.data!.products[2].image!);
-      // print(homeModel!.status);
       emit(AppSuccessHomeDataState(userModel!));
     }).catchError((error) {
       print(error.toString());
@@ -143,7 +180,6 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       changeCartsModel = ChangeCartsModel.fromJson(value.data);
-      //print(value.data);
       if (!changeCartsModel!.status!) {
         carts[productId] = !carts[productId]!;
       } else {
@@ -166,14 +202,29 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       cartsModel = CartsModel.fromJson(value.data);
-      // printFullText(value.data.toString());
-      //print(value.data);
-      //print(',,,,,,,,,,,,,,,,,,,,,,,,,');
-      //print(carts.length);
       emit(AppSuccessGetCartsState());
     }).catchError((error) {
       print(error.toString());
       emit(AppErrorGetCartsState());
+    });
+  }
+
+  void updateCartData({
+    required String id,
+    int? quantity,
+  }) {
+    emit(AppLoadingUpdateCartDataState());
+    DioHelper.putData(
+      url: "${"carts/" + id}",
+      data: {
+        'quantity': quantity,
+      },
+      token: token,
+    ).then((value) {
+      getCarts();
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorUpdateCartDataState());
     });
   }
 
@@ -188,21 +239,6 @@ class AppCubit extends Cubit<AppStates> {
     model.data!.cartItems![index].quantity--;
     emit(AppUpdateCartMinusQuantity());
   }
-  void updateCartData({required String id, int? quantity }) {
-    emit(AppLoadingUpdateCartDataState());
-    DioHelper.putData(
-      url: "${"carts/" +id}",
-      data: {
-        'quantity': quantity,
-      },
-      token: token,
-    ).then((value) {
-      getCarts();
-    }).catchError((error){
-      print(error.toString());
-      emit(AppErrorUpdateCartDataState());
-    });
-  }
 
   //GetUserData
   LoginModel? userModel;
@@ -214,20 +250,34 @@ class AppCubit extends Cubit<AppStates> {
       token: token,
     ).then((value) {
       userModel = LoginModel.fromJson(value.data);
-      // printFullText(userModel!.data!.name!);
-
       emit(AppSuccessGetUserDataState(userModel!));
     }).catchError((error) {
       print(error.toString());
       emit(AppErrorGetUserDataState());
     });
   }
+  AddressModel? addressModel;
+  GetAddressModel? getAddressModel;
+  void getUserAddress() {
+    emit(AppLoadingGetUserDataAddressState());
+    DioHelper.getData(
+      url: ADDRESS,
+      token: token,
+    ).then((value) {
+      getAddressModel = GetAddressModel.fromJson(value.data);
+      emit(AppSuccessGetUserDataAddressState(getAddressModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorGetUserDataAddressState());
+    });
+  }
 
+  //UpdateUserData
   void updateUserData({
     required String? name,
     required String? email,
     required String? phone,
-    required String? image,
+    //required Image? image,
   }) {
     emit(AppLoadingUpdateUserState());
     DioHelper.putData(
@@ -237,7 +287,7 @@ class AppCubit extends Cubit<AppStates> {
         'name': name,
         'email': email,
         'phone': phone,
-        'image': image,
+        // 'image': 'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
       },
     ).then((value) {
       userModel = LoginModel.fromJson(value.data);
@@ -249,4 +299,95 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppErrorUpdateUserState());
     });
   }
+
+  //AddAddressUser
+
+  void addAddress({
+    String name = 'Work',
+    required String? city,
+    required String? region,
+    required String? details,
+    required String? notes,
+    String latitude = '30.0616863',
+    String longitude = '31.3260088',
+  }) {
+    emit(AppLoadingUserAddressState());
+
+    DioHelper.postData(
+      url: ADDRESS,
+      token: CacheHelper.getData(key: "token"),
+      data: {
+        'name': name,
+        'city': city,
+        'region': region,
+        'details': details,
+        'notes': notes,
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+    ).then((value) {
+      print(value.data);
+      addressModel = AddressModel.fromJson(value.data);
+      if(addressModel!.status!) getUserAddress();
+      emit(AppSuccessUserAddressState(addressModel!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorUserAddressState(error.toString()));
+    });
+  }
+  //UpdateUserAddress
+  UpdateAddressModel? updateAddressModel;
+  void updateAddress({
+    required addressId,
+    String name = 'work',
+    required String city,
+    required String region,
+    required String details,
+    required String notes,
+    double latitude = 30.0616863,
+    double longitude = 31.3260088,
+  }) {
+    emit(AppLoadingUpdateUserAddressState());
+    DioHelper.putData(
+      url: 'addresses/$addressId',
+      data: {
+        'name': name,
+        'city': city,
+        'region': region,
+        'details': details,
+        'notes': notes,
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+      token: token,
+    ).then((value) {
+      updateAddressModel = UpdateAddressModel.fromJson(value.data);
+      if (updateAddressModel!.status!) getUserAddress();
+      emit(AppSuccessUpdateUserAddressState(updateAddressModel!));
+    }).catchError((error) {
+      emit(AppErrorUpdateUserAddressState());
+      print(error.toString());
+    });
+  }
+
+//add order
+//   void addOrders({
+//     required addressId,
+//   }) {
+//     DioHelper.postData(
+//       url: ORDERS,
+//       data: {
+//         'address_id': addressId,
+//         'payment_method': 1,
+//         'use_points': false,
+//       },
+//       token: token,
+//     ).then((value) {
+//       addressModel = AddressModel.fromJson(value.data);
+//       emit(AppSuccessAddOrdersState());
+//     }).catchError((error) {
+//       print(error.toString());
+//       emit(AppErrorAddOrdersState());
+//     });
+//   }
 }

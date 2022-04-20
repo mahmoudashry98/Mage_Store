@@ -13,3 +13,9 @@ const CARTS = 'carts';
 const PROFILE = 'profile';
 
 const UPDATE_PROFILE = 'update-profile';
+
+const UPDATE_ADDRESS = 'addresses/1';
+
+const ADDRESS = 'addresses';
+
+const ORDERS = "orders";

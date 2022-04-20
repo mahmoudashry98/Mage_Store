@@ -55,3 +55,6 @@ enum Pages {
   AddAddress,
   Summary,
 }
+
+// var index = 0;
+// var addressModel = AppCubit.get(context).getAddressModel!.data!.data![index];

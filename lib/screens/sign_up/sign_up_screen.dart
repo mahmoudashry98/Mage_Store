@@ -37,14 +37,13 @@ class SignUpScreen extends StatelessWidget {
                 state: ToastStates.SUCCESS,
               );
               CacheHelper.saveData(
-                      key: 'token', value: state.loginModel.data!.token)
-                  .then((value) {
+                key: 'token',
+                value: state.loginModel.data!.token,
+              ).then((value) {
                 Navigator.pushReplacementNamed(context, HomeLayout.routeName);
               });
-            } else {
-
-            }
-          }else if(state is RegisterErrorState){
+            } else {}
+          } else if (state is RegisterErrorState) {
             print(state.loginModel.message);
             showToast(
               text: state.loginModel.message!,
@@ -196,10 +195,11 @@ class SignUpScreen extends StatelessWidget {
                                 function: () {
                                   if (_formKey.currentState!.validate()) {
                                     RegisterCubit.get(context).userRegister(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        phone: phoneController.text);
+                                      name: nameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      phone: phoneController.text,
+                                    );
                                     AppCubit.get(context).currentIndex = 0;
                                   }
                                 },

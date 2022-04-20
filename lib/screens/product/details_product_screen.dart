@@ -22,24 +22,24 @@ class ProductItemScreen extends StatefulWidget {
 
 class _ProductItemScreenState extends State<ProductItemScreen> {
   int selectedImage = 0;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
-        if (state is AppSuccessChangeCartsState){
-          if (state.model.status!){
+        if (state is AppSuccessChangeCartsState) {
+          if (state.model.status!) {
             print(state.model.message);
             showToast(
               text: state.model.message!,
               state: ToastStates.SUCCESS,
             );
-          }else if(!state.model.status!){
+          } else if (!state.model.status!) {
             print(state.model.message);
             showToast(
               text: state.model.message!,
               state: ToastStates.ERROR,
             );
-
           }
         }
       },
@@ -85,7 +85,9 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                       Image.network('${widget.model.images![selectedImage]}'),
                 ),
               ),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               Center(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -107,7 +109,6 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                 margin: EdgeInsets.only(top: getProportionateScreenWidth(20)),
                 padding: EdgeInsets.only(top: getProportionateScreenWidth(20)),
                 width: double.infinity,
-                height: 300,
                 decoration: BoxDecoration(
                   color: kSecondaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.only(
@@ -133,8 +134,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
-                        padding:
-                            EdgeInsets.all(getProportionateScreenWidth(5)),
+                        padding: EdgeInsets.all(getProportionateScreenWidth(5)),
                         width: getProportionateScreenWidth(64),
                         decoration: BoxDecoration(
                             color: Color(0xFFFFE6E6),
@@ -142,16 +142,19 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                               topLeft: Radius.circular(20),
                               bottomLeft: Radius.circular(20),
                             )),
-                        child:IconButton(
-                          onPressed: (){
-                            AppCubit.get(context).changeFavorites(widget.model.id!);
+                        child: IconButton(
+                          onPressed: () {
+                            AppCubit.get(context)
+                                .changeFavorites(widget.model.id!);
                           },
                           icon: Icon(
                             Icons.favorite,
                             size: 25,
-                            color: AppCubit.get(context).favorites[widget.model.id]! ? kPrimaryColor:Colors.grey ,
+                            color: AppCubit.get(context)
+                                    .favorites[widget.model.id]!
+                                ? kPrimaryColor
+                                : Colors.grey,
                           ),
-
                         ),
                       ),
                     ),
@@ -174,41 +177,43 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                         left: getProportionateScreenWidth(20),
                         right: getProportionateScreenWidth(64),
                       ),
-                      child: Row(
-                        children: [
-                          Text.rich(
-                            TextSpan(
-                              style: TextStyle(
-                                fontSize: getProportionateScreenWidth(12),
-                                color: Colors.black,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'Price: ${widget.model.price.round()} ',
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(18),
-                                    fontWeight: FontWeight.bold,
-                                    color: kPrimaryColor,
-                                  ),
+                      child: Expanded(
+                        child: Row(
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(12),
+                                  color: Colors.black,
                                 ),
-                                TextSpan(text: 'EGP'),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          if (widget.model.discount != 0)
-                            Text(
-                              '${widget.model.oldPrice.round()}',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        'Price: ${widget.model.price.round()} ',
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(18),
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(text: 'EGP'),
+                                ],
                               ),
                             ),
-
-                        ],
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            if (widget.model.discount != 0)
+                              Text(
+                                '${widget.model.oldPrice.round()}',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -231,9 +236,8 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                 ),
                 fallback: (context) => Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xFFFF7643)),
-                    )),
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF7643)),
+                )),
               ),
             ],
           ),
