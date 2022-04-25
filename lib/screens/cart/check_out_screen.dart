@@ -8,9 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/cart_product_model.dart';
 import '../../shared/components/components.dart';
 import '../../shared/size/size_config.dart';
+import '../sign_in/login_success_screen.dart';
 
 class CheckOutScreen extends StatelessWidget {
   final int? id;
+
   const CheckOutScreen({Key? key, this.id}) : super(key: key);
 
   @override
@@ -21,30 +23,19 @@ class CheckOutScreen extends StatelessWidget {
     var streetController = TextEditingController();
     var notesController = TextEditingController();
 
-
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
-        if (state is AppSuccessUserAddressState) {
-          print(state.addressModel.data);
-        }
+        // if(state is AppSuccessAddOrdersState){
+        //   navigateTo(context, LoginSuccessScreen());
+        // }
       },
       builder: (context, state) {
-        var model = AppCubit
-            .get(context)
-            .userModel;
+        var model = AppCubit.get(context).userModel;
         var index = 0;
         var addressModel =
-        AppCubit
-            .get(context)
-            .getAddressModel!
-            .data!
-            .data![index];
-        int currentValue = AppCubit
-            .get(context)
-            .currentValue;
-        int newIndex = AppCubit
-            .get(context)
-            .newIndex;
+            AppCubit.get(context).getAddressModel!.data!.data![index];
+        int currentValue = AppCubit.get(context).currentValue;
+        int newIndex = AppCubit.get(context).newIndex;
         cityController.text = addressModel.city!;
         regionController.text = addressModel.region!;
         streetController.text = addressModel.details!;
@@ -62,8 +53,15 @@ class CheckOutScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   if (state is AppLoadingUpdateUserAddressState)
+                    LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      color: kPrimaryColor,
+                    ),
+                  if (state is AppLoadingAddOrdersState)
                     LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       color: kPrimaryColor,
@@ -96,7 +94,6 @@ class CheckOutScreen extends StatelessWidget {
                                   Text(
                                     'Order will be delivered between 3-5 business\ndays',
                                   ),
-                                  Spacer(),
                                   Radio(
                                     value: 1,
                                     groupValue: currentValue,
@@ -122,7 +119,6 @@ class CheckOutScreen extends StatelessWidget {
                                   Text(
                                     'place your order before 6pm and your items will\nbe delivered the next day',
                                   ),
-                                  Spacer(),
                                   Radio(
                                     value: 2,
                                     groupValue: currentValue,
@@ -149,9 +145,8 @@ class CheckOutScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    'Pick a particular data from the calender and order\nwill be delivered on selected date',
+                                    'Pick a particular data from the calender and \norder will be delivered on selected date',
                                   ),
-                                  Spacer(),
                                   Radio(
                                     value: 3,
                                     groupValue: currentValue,
@@ -262,43 +257,38 @@ class CheckOutScreen extends StatelessWidget {
                                     // },
                                     controller: notesController,
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 220, top: 10),
+                                      left: 220,
+                                      top: 10,
+                                    ),
                                     child: ConditionalBuilder(
-                                      condition:
-                                      state is! AppLoadingUpdateUserAddressState,
-                                      builder: (context) =>
-                                          SizedBox(
-                                            width: 100,
-                                            height:
-                                            getProportionateScreenHeight(35),
-                                            child: defaultFloatButton(
-                                                text: "Update",
-                                                function: () {
-                                                  if (formKey.currentState!
-                                                      .validate()) {
-                                                    AppCubit.get(context)
-                                                        .updateAddress(
-                                                      addressId: addressModel.id,
-                                                      city: cityController.text,
-                                                      region: regionController.text,
-                                                      details: streetController.text,
-                                                      notes: notesController.text,
-                                                    );
-                                                  }
-                                                }),
-                                          ),
-                                      fallback: (context) =>
-                                          Center(
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Color(0xFFFF7643)),
-                                              )),
+                                      condition: state
+                                          is! AppLoadingUpdateUserAddressState,
+                                      builder: (context) => SizedBox(
+                                        child: defaultFloatButton(
+                                            text: "Update",
+                                            function: () {
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                AppCubit.get(context)
+                                                    .updateAddress(
+                                                  addressId: addressModel.id,
+                                                  city: cityController.text,
+                                                  region: regionController.text,
+                                                  details:
+                                                      streetController.text,
+                                                  notes: notesController.text,
+                                                );
+                                              }
+                                            }),
+                                      ),
+                                      fallback: (context) => Center(
+                                          child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Color(0xFFFF7643)),
+                                      )),
                                     ),
                                   ),
                                 ],
@@ -324,13 +314,11 @@ class CheckOutScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w500),
                               ),
                               Container(
-                                height: 70,
-                                width: double.infinity,
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(12.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -341,8 +329,7 @@ class CheckOutScreen extends StatelessWidget {
                                               '${model!.data!.name}',
                                               style: TextStyle(
                                                   color: Colors.black,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Spacer(),
                                             Icon(
@@ -355,8 +342,7 @@ class CheckOutScreen extends StatelessWidget {
                                           TextSpan(
                                             children: [
                                               TextSpan(
-                                                  text:
-                                                      '${addressModel.city},',
+                                                  text: '${addressModel.city},',
                                                   style: TextStyle(
                                                     fontSize: 16,
                                                   )),
@@ -373,8 +359,7 @@ class CheckOutScreen extends StatelessWidget {
                                                     fontSize: 16,
                                                   )),
                                               TextSpan(
-                                                text:
-                                                    '${addressModel.notes},',
+                                                text: '${addressModel.notes},',
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                 ),
@@ -417,9 +402,7 @@ class CheckOutScreen extends StatelessWidget {
                       onStepTapped: (int index) {
                         AppCubit.get(context).onStepTapped(index);
                       },
-                      currentStep: AppCubit
-                          .get(context)
-                          .newIndex,
+                      currentStep: AppCubit.get(context).newIndex,
                       onStepContinue: () {
                         AppCubit.get(context).onStepContinue();
                         if (newIndex == 1) {
@@ -433,10 +416,20 @@ class CheckOutScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  //Text('${addressModel.id}'),
-                  defaultFloatButton(
-                    text: "Done Order",
-                    function: () {},
+                  ConditionalBuilder(
+                    condition: state is! AppLoadingAddOrdersState,
+                    builder: (context)=>defaultFloatButton(
+                      text: "Done Order",
+                      function: () {
+                        AppCubit.get(context).addOrders(addressId: addressModel.id);
+
+                      },
+                    ),
+                    fallback: (context) => Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFF7643)),
+                        )),
+
                   ),
                 ],
               ),
@@ -499,10 +492,10 @@ class CheckOutScreen extends StatelessWidget {
                                   children: [
                                     TextSpan(
                                       text:
-                                      "${cartItems.product!.price.toString()} ",
+                                          "${cartItems.product!.price.toString()} ",
                                       style: TextStyle(
                                         fontSize:
-                                        getProportionateScreenWidth(18),
+                                            getProportionateScreenWidth(18),
                                         fontWeight: FontWeight.bold,
                                         color: kPrimaryColor,
                                       ),
@@ -520,26 +513,17 @@ class CheckOutScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 140,
-                                      height: 40,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color:
-                                        Color(0xFFDADADA).withOpacity(0.5),
+                                            Color(0xFFDADADA).withOpacity(0.5),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Quantity: ${model.data!
-                                                .cartItems![index].quantity
-                                                .toString()}',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black),
-                                          ),
-                                        ],
+                                      child: Text(
+                                        'Quantity: ${model.data!.cartItems![index].quantity.toString()}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ),
                                   ],

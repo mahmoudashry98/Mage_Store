@@ -76,18 +76,18 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
             ],
           ),
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: getProportionateScreenWidth(220),
+                width: getProportionateScreenWidth(150),
                 child: AspectRatio(
                   aspectRatio: 1,
                   child:
                       Image.network('${widget.model.images![selectedImage]}'),
                 ),
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 5),
               Center(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -105,9 +105,11 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               Container(
-                margin: EdgeInsets.only(top: getProportionateScreenWidth(20)),
-                padding: EdgeInsets.only(top: getProportionateScreenWidth(20)),
+                padding: EdgeInsets.only(top: getProportionateScreenWidth(25)),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: kSecondaryColor.withOpacity(0.1),
@@ -128,9 +130,9 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                         maxLines: 1,
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
@@ -169,51 +171,45 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                         maxLines: 10,
                       ),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
                     Padding(
-                      padding: EdgeInsets.only(
-                        left: getProportionateScreenWidth(20),
-                        right: getProportionateScreenWidth(64),
-                      ),
-                      child: Expanded(
-                        child: Row(
-                          children: [
-                            Text.rich(
-                              TextSpan(
-                                style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(12),
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        'Price: ${widget.model.price.round()} ',
-                                    style: TextStyle(
-                                      fontSize: getProportionateScreenWidth(18),
-                                      fontWeight: FontWeight.bold,
-                                      color: kPrimaryColor,
-                                    ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12),
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Price: ${widget.model.price.round()} ',
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(18),
+                                    fontWeight: FontWeight.bold,
+                                    color: kPrimaryColor,
                                   ),
-                                  TextSpan(text: 'EGP'),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            if (widget.model.discount != 0)
-                              Text(
-                                '${widget.model.oldPrice.round()}',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
                                 ),
+                                TextSpan(text: 'EGP'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          if (widget.model.discount != 0)
+                            Text(
+                              '${widget.model.oldPrice.round()}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
                               ),
-                          ],
-                        ),
+                            ),
+                        ],
                       ),
                     ),
                   ],
@@ -228,7 +224,7 @@ class _ProductItemScreenState extends State<ProductItemScreen> {
                   width: getProportionateScreenWidth(200),
                   height: getProportionateScreenHeight(46),
                   child: defaultFloatButton(
-                    text: "Add to Chart",
+                    text: "Add to Cart",
                     function: () {
                       AppCubit.get(context).changeCarts(widget.model.id!);
                     },

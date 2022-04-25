@@ -64,7 +64,7 @@ class ProductScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20),
-                vertical: getProportionateScreenWidth(10),
+                vertical: getProportionateScreenWidth(5),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,9 +103,6 @@ class ProductScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: getProportionateScreenWidth(10),
-            ),
             Container(
               margin: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20),
@@ -135,7 +132,7 @@ class ProductScreen extends StatelessWidget {
               )),
             ),
             SizedBox(
-              height: getProportionateScreenWidth(30),
+              height: getProportionateScreenWidth(10),
             ),
             Padding(
               padding: EdgeInsets.symmetric(
@@ -156,7 +153,7 @@ class ProductScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: getProportionateScreenWidth(30),
+              height: getProportionateScreenWidth(10),
             ),
             Column(
               children: [
@@ -165,7 +162,7 @@ class ProductScreen extends StatelessWidget {
                   press: () {},
                 ),
                 SizedBox(
-                  height: getProportionateScreenWidth(20),
+                  height: getProportionateScreenWidth(10),
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -210,7 +207,7 @@ class ProductScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: getProportionateScreenWidth(20),
+                  height: getProportionateScreenWidth(10),
                 ),
               ],
             ),
@@ -220,18 +217,20 @@ class ProductScreen extends StatelessWidget {
                   text: "Popular Product",
                   press: () {},
                 ),
-                SizedBox(
-                  height: getProportionateScreenWidth(20),
-                ),
                 Container(
+                  padding: EdgeInsets.only(left: 10),
                   width: double.infinity,
                   height: getProportionateScreenWidth(190),
-                  child: ListView.builder(
+                  child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => buildProductItems(
                       model!.data!.products[index],
                       context,
                       index,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 10.0,
                     ),
                     itemCount: model!.data!.products.length,
                   ),
@@ -352,19 +351,18 @@ class ProductScreen extends StatelessWidget {
                     ),
                     child: Text.rich(
                       TextSpan(
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          children: [
-                            TextSpan(
-                                text: '$category\n',
-                                style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(18),
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            TextSpan(text: '$numOfBrands Brands'),
-
-                          ],
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        children: [
+                          TextSpan(
+                              text: '$category\n',
+                              style: TextStyle(
+                                fontSize: getProportionateScreenWidth(18),
+                                fontWeight: FontWeight.bold,
+                              )),
+                          TextSpan(text: '$numOfBrands Brands'),
+                        ],
                       ),
                     ),
                   )
@@ -384,112 +382,108 @@ class ProductScreen extends StatelessWidget {
                 model: AppCubit.get(context).homeModel!.data!.products[index],
               ));
         },
-        child: Padding(
-          padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
-          child: Container(
-            width: getProportionateScreenWidth(140),
-            child: Column(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1.022,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomStart,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            '${model.image!}',
-                            fit: BoxFit.cover,
-                          ),
+        child: Container(
+          width: getProportionateScreenWidth(140),
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 1.022,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomStart,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.network(
+                          '${model.image!}',
+                          fit: BoxFit.cover,
                         ),
-                        if (model.discount != 0)
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
-                            color: Colors.red,
-                            child: Text(
-                              'DISCOUNT',
-                              style: TextStyle(
-                                fontSize: 8.0,
-                                color: Colors.white,
-                              ),
+                      ),
+                      if (model.discount != 0)
+                        Container(
+                          color: Colors.red,
+                          child: Text(
+                            'DISCOUNT',
+                            style: TextStyle(
+                              fontSize: 8.0,
+                              color: Colors.white,
                             ),
                           ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                "${model.name!}",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                maxLines: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(8),
+                        color: Colors.black,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${model.price.round()} ',
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(18),
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        TextSpan(text: 'EGP'),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  "${model.name!}",
-                  style: TextStyle(
-                    color: Colors.black,
+                  SizedBox(
+                    width: 5.0,
                   ),
-                  maxLines: 1,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12),
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: '${model.price.round()} ',
-                            style: TextStyle(
-                              fontSize: getProportionateScreenWidth(18),
-                              fontWeight: FontWeight.bold,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                          TextSpan(text: 'EGP'),
-                        ],
+                  if (model.discount != 0)
+                    Text(
+                      '${model.oldPrice.round()}',
+                      style: TextStyle(
+                        fontSize: 10.0,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    if (model.discount != 0)
-                      Text(
-                        '${model.oldPrice.round()}',
-                        style: TextStyle(
-                          fontSize: 10.0,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(30),
-                      onTap: () {
-                        AppCubit.get(context).changeFavorites(model.id!);
-                      },
-                      child: Container(
-                        width: getProportionateScreenWidth(28),
-                        height: getProportionateScreenWidth(28),
-                        decoration: BoxDecoration(
-                            color: kSecondaryColor.withOpacity(0.1),
-                            shape: BoxShape.circle),
-                        child: Icon(
-                          Icons.favorite,
-                          size: 15,
-                          color: AppCubit.get(context).favorites[model.id]!
-                              ? kPrimaryColor
-                              : Colors.grey,
-                        ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(30),
+                    onTap: () {
+                      AppCubit.get(context).changeFavorites(model.id!);
+                    },
+                    child: Container(
+                      width: getProportionateScreenWidth(28),
+                      height: getProportionateScreenWidth(28),
+                      decoration: BoxDecoration(
+                          color: kSecondaryColor.withOpacity(0.1),
+                          shape: BoxShape.circle),
+                      child: Icon(
+                        Icons.favorite,
+                        size: 15,
+                        color: AppCubit.get(context).favorites[model.id]!
+                            ? kPrimaryColor
+                            : Colors.grey,
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       );

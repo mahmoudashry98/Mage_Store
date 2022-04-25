@@ -2,6 +2,7 @@ import 'package:e_commerce_app/models/address_model.dart';
 import 'package:e_commerce_app/models/change_carts_model.dart';
 import 'package:e_commerce_app/models/change_favorite_model.dart';
 import 'package:e_commerce_app/models/login_model.dart';
+import 'package:e_commerce_app/models/order_model.dart';
 
 import '../../models/get_address_model.dart';
 import '../../models/update_address_model.dart';
@@ -126,6 +127,12 @@ class AppErrorUserAddressState extends AppStates {
 }
 
 //addOrders
+class AppLoadingAddOrdersState extends AppStates {}
 class AppSuccessAddOrdersState extends AppStates {}
 class AppErrorAddOrdersState extends AppStates {}
+
+//Cancel order
+class AppLoadingCancelOrdersState extends AppStates {}
+class AppSuccessCancelOrdersState extends AppStates {}
+class AppErrorCancelOrdersState extends AppStates {}
 

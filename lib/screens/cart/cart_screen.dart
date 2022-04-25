@@ -47,8 +47,6 @@ class CartScreen extends StatelessWidget {
                     ? Center(
                         child: SvgPicture.asset(
                           'assets/images/empty_cart.svg',
-                          width: 200,
-                          height: 200,
                         ),
                       )
                     : ListView.builder(
@@ -158,12 +156,13 @@ class CartScreen extends StatelessWidget {
                                         text: "Check Out",
                                         function: () {
                                           navigateTo(context, CheckOutScreen());
-
                                         },
                                       ),
                                     ),
+
                                   ],
-                                )
+                                ),
+                                SizedBox(height: 20,)
                               ],
                             ),
                           ),
@@ -179,154 +178,142 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget buildCart(CartItems cartItems, context, index, CartsModel model) =>
-      Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 10,
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                height: 150,
-                child: Card(
-                  elevation: 2,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: getProportionateScreenWidth(95),
-                        child: AspectRatio(
-                          aspectRatio: 0.99,
-                          child: Container(
-                            child: Image.network(
-                              "${cartItems.product!.image}",
-                            ),
+      Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Card(
+                elevation: 2,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: getProportionateScreenWidth(95),
+                      child: AspectRatio(
+                        aspectRatio: 0.99,
+                        child: Container(
+                          child: Image.network(
+                            "${cartItems.product!.image}",
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${cartItems.product!.name}",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16.0, color: Colors.black),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${cartItems.product!.name}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12),
+                                color: Colors.black,
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text.rich(
+                              children: [
                                 TextSpan(
+                                  text:
+                                      "${cartItems.product!.price.toString()} ",
                                   style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(12),
-                                    color: Colors.black,
+                                    fontSize: getProportionateScreenWidth(18),
+                                    fontWeight: FontWeight.bold,
+                                    color: kPrimaryColor,
                                   ),
+                                ),
+                                TextSpan(
+                                    text: 'EGP ',
+                                    style: TextStyle(color: Colors.black)),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Container(
+                                width: 140,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xFFDADADA).withOpacity(0.5),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    TextSpan(
-                                      text:
-                                          "${cartItems.product!.price.toString()} ",
-                                      style: TextStyle(
-                                        fontSize:
-                                            getProportionateScreenWidth(18),
-                                        fontWeight: FontWeight.bold,
-                                        color: kPrimaryColor,
-                                      ),
+                                    IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () {
+                                        AppCubit.get(context)
+                                            .plusQuantity(index, model);
+                                        AppCubit.get(context).updateCartData(
+                                            id: model.data!.cartItems![index].id
+                                                .toString(),
+                                            quantity: model.data!
+                                                .cartItems![index].quantity);
+                                      },
                                     ),
-                                    TextSpan(
-                                        text: 'EGP ',
-                                        style: TextStyle(color: Colors.black)),
+                                    Text(
+                                      '${model.data!.cartItems![index].quantity.toString()}',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                    IconButton(
+                                      padding: EdgeInsets.only(bottom: 20),
+                                      icon: Icon(
+                                        Icons.minimize,
+                                      ),
+                                      onPressed: () {
+                                        AppCubit.get(context)
+                                            .minusQuantity(index, model);
+                                        AppCubit.get(context).updateCartData(
+                                            id: model.data!.cartItems![index].id
+                                                .toString(),
+                                            quantity: model.data!
+                                                .cartItems![index].quantity);
+                                      },
+                                    ),
                                   ],
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(55.0),
+                                onTap: () {
+                                  AppCubit.get(context)
+                                      .changeCarts(cartItems.product!.id!);
+                                },
+                                child: SvgPicture.asset(
+                                  'assets/icons/Trash.svg',
                                 ),
                               ),
                               SizedBox(
-                                height: 10,
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 140,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(0xFFDADADA).withOpacity(0.5),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.add),
-                                            onPressed: () {
-                                              AppCubit.get(context)
-                                                  .plusQuantity(index, model);
-                                              AppCubit.get(context)
-                                                  .updateCartData(
-                                                id: model
-                                                    .data!.cartItems![index].id
-                                                    .toString(),
-                                                quantity: model.data!.cartItems![index].quantity
-                                              );
-                                            },
-                                          ),
-                                          Text(
-                                            '${model.data!.cartItems![index].quantity.toString()}',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.only(bottom: 20),
-                                            icon: Icon(
-                                              Icons.minimize,
-                                            ),
-                                            onPressed: () {
-                                              AppCubit.get(context)
-                                                  .minusQuantity(index, model);
-                                              AppCubit.get(context)
-                                                  .updateCartData(
-                                                  id: model
-                                                      .data!.cartItems![index].id
-                                                      .toString(),
-                                                  quantity: model.data!.cartItems![index].quantity
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    InkWell(
-                                      borderRadius: BorderRadius.circular(55.0),
-                                      onTap: () {
-                                        AppCubit.get(context)
-                                            .changeCarts(cartItems.product!.id!);
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/icons/Trash.svg',
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                width: 5,
                               ),
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
 }

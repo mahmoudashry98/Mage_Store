@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/layout/cubit/cubit.dart';
 import 'package:e_commerce_app/layout/home_layout.dart';
 import 'package:e_commerce_app/screens/sign_in/cubit/cubit.dart';
 import 'package:e_commerce_app/screens/sign_in/cubit/states.dart';
@@ -59,6 +60,7 @@ class LoginSuccessScreen extends StatelessWidget {
                     function: () {
                       CacheHelper.getData(key: 'token');
                       Navigator.pushReplacementNamed(context, HomeLayout.routeName);
+                      AppCubit.get(context).getOrders();
                     },
                   ),
                 ),

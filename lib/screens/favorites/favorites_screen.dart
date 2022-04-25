@@ -64,110 +64,106 @@ class FavoritesScreen extends StatelessWidget {
                 model: AppCubit.get(context).homeModel!.data!.products[index],
               ));
         },
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            height: 120.0,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.bottomStart,
-                  children: [
-                    Image(
-                      image: NetworkImage(model.product!.image),
-                      height: 120.0,
-                      width: 120.0,
-                    ),
-                    if (model.product!.discount != 0 && true)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        color: Colors.red,
-                        child: Text(
-                          'DISCOUNT',
-                          style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white,
-                          ),
+        child: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.bottomStart,
+                children: [
+                  Image(
+                    image: NetworkImage(model.product!.image),
+                    height: 120.0,
+                    width: 120.0,
+                  ),
+                  if (model.product!.discount != 0 && true)
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      color: Colors.red,
+                      child: Text(
+                        'DISCOUNT',
+                        style: TextStyle(
+                          fontSize: 8.0,
+                          color: Colors.white,
                         ),
                       ),
+                    ),
+                ],
+              ),
+              SizedBox(
+                width: 20.0,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      model.product!.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        height: 1.3,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      model.product!.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        height: 1.3,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          model.product!.price.toString(),
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        if (model.product!.discount != 0 && true)
+                          Text(
+                            model.product!.oldPrice.toString(),
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            AppCubit.get(context)
+                                .changeFavorites(model.product!.id);
+                          },
+                          icon: CircleAvatar(
+                            radius: 15.0,
+                            backgroundColor: AppCubit.get(context)
+                                    .favorites[model.product!.id]!
+                                ? kPrimaryColor
+                                : Colors.grey,
+                            child: Icon(
+                              Icons.favorite_border,
+                              color: Colors.white,
+                              size: 14.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        model.product!.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          height: 1.3,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        model.product!.description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          height: 1.3,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            model.product!.price.toString(),
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          if (model.product!.discount != 0 && true)
-                            Text(
-                              model.product!.oldPrice.toString(),
-                              style: TextStyle(
-                                fontSize: 10.0,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              AppCubit.get(context)
-                                  .changeFavorites(model.product!.id);
-                            },
-                            icon: CircleAvatar(
-                              radius: 15.0,
-                              backgroundColor: AppCubit.get(context)
-                                      .favorites[model.product!.id]!
-                                  ? kPrimaryColor
-                                  : Colors.grey,
-                              child: Icon(
-                                Icons.favorite_border,
-                                color: Colors.white,
-                                size: 14.0,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

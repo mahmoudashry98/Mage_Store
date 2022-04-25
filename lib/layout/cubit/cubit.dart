@@ -10,7 +10,6 @@ import 'package:e_commerce_app/models/home_model.dart';
 import 'package:e_commerce_app/models/login_model.dart';
 import 'package:e_commerce_app/screens/favorites/favorites_screen.dart';
 import 'package:e_commerce_app/screens/product/products_screen.dart';
-import 'package:e_commerce_app/screens/profile/settings_screen.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/end_points.dart';
 import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
@@ -19,7 +18,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/get_address_model.dart';
+import '../../models/order_model.dart';
 import '../../models/update_address_model.dart';
+import '../../screens/setting/settings_screen.dart';
 import '../../shared/network/local/cache_helper.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -370,24 +371,59 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-//add order
-//   void addOrders({
-//     required addressId,
-//   }) {
-//     DioHelper.postData(
-//       url: ORDERS,
-//       data: {
-//         'address_id': addressId,
-//         'payment_method': 1,
-//         'use_points': false,
-//       },
-//       token: token,
-//     ).then((value) {
-//       addressModel = AddressModel.fromJson(value.data);
-//       emit(AppSuccessAddOrdersState());
-//     }).catchError((error) {
-//       print(error.toString());
-//       emit(AppErrorAddOrdersState());
-//     });
-//   }
+  void addOrders({
+    required addressId,
+  }) {
+    emit(AppLoadingAddOrdersState());
+    DioHelper.postData(
+      url: ORDERS,
+      data: {
+        'address_id': addressId,
+        'payment_method': 1,
+        'use_points': false,
+      },
+      token: token,
+    ).then((value) {
+      addressModel = AddressModel.fromJson(value.data);
+      emit(AppSuccessAddOrdersState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorAddOrdersState());
+    });
+  }
+
+  GetOrdersModel? getOrdersModel;
+  void getOrders() {
+    DioHelper.getData(
+      url: ORDERS,
+      token: CacheHelper.getData(key: "token"),
+    ).then((
+        value,
+        ) {
+      getOrdersModel = GetOrdersModel.fromJson(value.data);
+      print('ddd${getOrdersModel!.message}');
+      emit(AppSuccessAddOrdersState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorAddOrdersState());
+    });
+  }
+
+  CancelOrderModel? cancelOrderModel;
+  void cancelOrder({required int orderId}) {
+    emit(AppLoadingCancelOrdersState());
+    DioHelper.getData(
+      url: "$ORDERS $orderId cancel ",
+      token: CacheHelper.getData(key: "token"),
+    ).then((
+        value,
+        ) {
+      cancelOrderModel = CancelOrderModel.fromJson(value.data);
+      emit(AppSuccessCancelOrdersState());
+      getOrders();
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppErrorCancelOrdersState());
+    });
+  }
 }

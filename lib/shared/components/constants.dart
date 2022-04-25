@@ -56,5 +56,9 @@ enum Pages {
   Summary,
 }
 
+const TextStyle textStyle =
+TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
+
+
 // var index = 0;
 // var addressModel = AppCubit.get(context).getAddressModel!.data!.data![index];

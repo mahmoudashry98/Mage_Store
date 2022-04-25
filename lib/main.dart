@@ -37,6 +37,7 @@ void main(context) async {
 
 class MyApp extends StatelessWidget {
   final Widget? startWidget;
+
   MyApp({
     this.startWidget,
   });
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
         ..getFavorites()
         ..getCarts()
         ..getUserData()
-      ..getUserAddress(),
+        ..getUserAddress()
+        ..getOrders(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {

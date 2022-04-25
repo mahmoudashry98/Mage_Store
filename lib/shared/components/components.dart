@@ -69,7 +69,7 @@ Widget defaultFloatButton({
     child: Text(
       text,
       style: TextStyle(
-        fontSize: getProportionateScreenWidth(18),
+        fontSize: getProportionateScreenWidth(14),
         color: Colors.white,
       ),
     ),
